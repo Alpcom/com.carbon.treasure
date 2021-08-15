@@ -26,7 +26,7 @@ package com.carbon.treasure.domain.map;
 /**
  * implementation of a rectangular area
  */
-public class RectangularArea implements Area {
+public class RectangularArea {
 
 	private final int x;
 	private final int y;
@@ -74,7 +74,11 @@ public class RectangularArea implements Area {
 		return this.height;
 	}
 
-	@Override
+	/**
+	 * 
+	 * @param position
+	 * @return true if and only of the position is in area
+	 */
 	public boolean contains(Position position) {
 		var px = position.getX();
 		var py = position.getY();

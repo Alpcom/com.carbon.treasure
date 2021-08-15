@@ -28,7 +28,7 @@ import static org.mockito.Mockito.mock;
 
 import org.junit.jupiter.api.Test;
 
-import com.carbon.treasure.domain.map.CartesianPosition;
+import com.carbon.treasure.domain.map.Position;
 import com.carbon.treasure.domain.map.CellFactory;
 import com.carbon.treasure.domain.map.RectangularArea;
 
@@ -38,8 +38,8 @@ class GameMapBuilderTest {
 	void testConflictBetweenTreasureAndMountain() {
 		var builder = new GameMapBuilder();
 		builder.setArea(new RectangularArea(0, 0, 2, 2));
-		builder.addMountains(new CartesianPosition(1, 1));
-		builder.addTreasure(new CartesianPosition(1, 1), 1);
+		builder.addMountains(new Position(1, 1));
+		builder.addTreasure(new Position(1, 1), 1);
 		assertThrows(IllegalArgumentException.class, () -> builder.build(mock(CellFactory.class)));
 	}
 

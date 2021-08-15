@@ -40,8 +40,13 @@ public class PlayerState {
 	private int score;
 
 	/**
-	 * @param position    see {@link Position}
-	 * @param orientation see {@link Orientation}
+	 * Create a Player state that will agglomerate state information related to a
+	 * player during the game
+	 * 
+	 * @param player               the player
+	 * @param position             its position on the map
+	 * @param orientation          player orientation
+	 * @param remainingInstruction instruction to proceed
 	 */
 	public PlayerState(Player player, Position position, Orientation orientation,
 			List<Instruction> remainingInstruction) {
@@ -72,10 +77,16 @@ public class PlayerState {
 		return this.orientation;
 	}
 
+	/**
+	 * @return the list of instruction remaining to execute
+	 */
 	public List<Instruction> getRemainingInstructions() {
 		return this.remainingInstruction;
 	}
 
+	/**
+	 * @return the player concerned by the information
+	 */
 	public Player getPlayer() {
 		return this.player;
 	}
@@ -103,18 +114,41 @@ public class PlayerState {
 				+ ", remainingInstruction=" + this.remainingInstruction + ", player=" + this.player + "]";
 	}
 
+	/**
+	 * set a new orientation of the player
+	 * 
+	 * @param orientation non-null orientation
+	 */
 	public void setOrientation(Orientation orientation) {
+		Objects.requireNonNull(orientation);
 		this.orientation = orientation;
 	}
 
-	public void setPosition(Position targetPosition) {
-		this.position = targetPosition;
+	/**
+	 * 
+	 * set the new position of the player
+	 * 
+	 * @param position non-null position
+	 */
+	public void setPosition(Position position) {
+		Objects.requireNonNull(orientation);
+		this.position = position;
 	}
 
-	public void addScorePoint(int i) {
-		this.score += i;
+	/**
+	 * add point to player score
+	 * 
+	 * @param pointToAdd number of point to add to the score
+	 */
+
+	public void addScorePoint(int pointToAdd) {
+		this.score += pointToAdd;
 	}
 
+	/**
+	 * 
+	 * @return the current score of the player
+	 */
 	public int getScorePoint() {
 		return this.score;
 	}

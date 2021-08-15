@@ -41,7 +41,7 @@ import com.carbon.treasure.domain.GameData;
 import com.carbon.treasure.domain.Orientation;
 import com.carbon.treasure.domain.Player;
 import com.carbon.treasure.domain.PlayerState;
-import com.carbon.treasure.domain.map.CartesianPosition;
+import com.carbon.treasure.domain.map.Position;
 import com.carbon.treasure.domain.map.Cell;
 import com.carbon.treasure.domain.map.CellFactory;
 import com.carbon.treasure.domain.map.CellFactoryImpl;
@@ -56,25 +56,25 @@ class GameServiceTest {
 		CellFactory cellFactory = new CellFactoryImpl();
 
 		List<Cell> cells = Arrays.asList(//
-				cellFactory.createPlain(new CartesianPosition(0, 0)), //
-				cellFactory.createMountain(new CartesianPosition(1, 0)), //
-				cellFactory.createPlain(new CartesianPosition(2, 0)), //
+				cellFactory.createPlain(new Position(0, 0)), //
+				cellFactory.createMountain(new Position(1, 0)), //
+				cellFactory.createPlain(new Position(2, 0)), //
 
-				cellFactory.createPlain(new CartesianPosition(0, 1)), //
-				cellFactory.createPlain(new CartesianPosition(1, 1)), //
-				cellFactory.createMountain(new CartesianPosition(2, 1)), //
+				cellFactory.createPlain(new Position(0, 1)), //
+				cellFactory.createPlain(new Position(1, 1)), //
+				cellFactory.createMountain(new Position(2, 1)), //
 
-				cellFactory.createPlain(new CartesianPosition(0, 2)), //
-				cellFactory.createPlain(new CartesianPosition(1, 2)), //
-				cellFactory.createPlain(new CartesianPosition(2, 2)), //
+				cellFactory.createPlain(new Position(0, 2)), //
+				cellFactory.createPlain(new Position(1, 2)), //
+				cellFactory.createPlain(new Position(2, 2)), //
 
-				cellFactory.createTreasure(new CartesianPosition(0, 3), 2), //
-				cellFactory.createTreasure(new CartesianPosition(1, 3), 3), //
-				cellFactory.createPlain(new CartesianPosition(2, 3))//
+				cellFactory.createTreasure(new Position(0, 3), 2), //
+				cellFactory.createTreasure(new Position(1, 3), 3), //
+				cellFactory.createPlain(new Position(2, 3))//
 
 		);
 
-		var indiana = new PlayerState(new Player("Indiana"), new CartesianPosition(1, 1), Orientation.SOUTH,
+		var indiana = new PlayerState(new Player("Indiana"), new Position(1, 1), Orientation.SOUTH,
 				new ArrayList<>(Arrays.asList(MOVE, MOVE, RIGHT, MOVE, RIGHT, MOVE, LEFT, LEFT, MOVE)));//
 		List<PlayerState> players = Arrays.asList(indiana);
 		var data = new GameData(new GameMap(new HashSet<>(cells)), players);
@@ -90,7 +90,7 @@ class GameServiceTest {
 		// check player
 		var indiana_out = toCheck.getAdventurers().get(0);
 		assertEquals(Orientation.SOUTH, indiana_out.getOrientation());
-		assertEquals(new CartesianPosition(0, 3), indiana_out.getPosition());
+		assertEquals(new Position(0, 3), indiana_out.getPosition());
 		assertEquals(3, indiana_out.getScorePoint());
 
 	}
@@ -102,18 +102,18 @@ class GameServiceTest {
 		CellFactory cellFactory = new CellFactoryImpl();
 
 		List<Cell> cells = Arrays.asList(//
-				cellFactory.createPlain(new CartesianPosition(0, 0)), //
-				cellFactory.createPlain(new CartesianPosition(0, 1)), //
-				cellFactory.createPlain(new CartesianPosition(0, 2)), //
-				cellFactory.createPlain(new CartesianPosition(0, 3)), //
-				cellFactory.createPlain(new CartesianPosition(0, 4)), //
-				cellFactory.createPlain(new CartesianPosition(0, 5)) //
+				cellFactory.createPlain(new Position(0, 0)), //
+				cellFactory.createPlain(new Position(0, 1)), //
+				cellFactory.createPlain(new Position(0, 2)), //
+				cellFactory.createPlain(new Position(0, 3)), //
+				cellFactory.createPlain(new Position(0, 4)), //
+				cellFactory.createPlain(new Position(0, 5)) //
 
 		);
 
-		var indiana = new PlayerState(new Player("Indiana"), new CartesianPosition(0, 0), Orientation.SOUTH,
+		var indiana = new PlayerState(new Player("Indiana"), new Position(0, 0), Orientation.SOUTH,
 				new ArrayList<>(Arrays.asList(MOVE, MOVE, MOVE, MOVE)));//
-		var lara = new PlayerState(new Player("Lara"), new CartesianPosition(0, 1), Orientation.SOUTH,
+		var lara = new PlayerState(new Player("Lara"), new Position(0, 1), Orientation.SOUTH,
 				new ArrayList<>(Arrays.asList(MOVE, MOVE, LEFT, LEFT, LEFT, LEFT, MOVE)));//
 		List<PlayerState> players = Arrays.asList(indiana, lara);
 		var data = new GameData(new GameMap(new HashSet<>(cells)), players);
@@ -123,11 +123,11 @@ class GameServiceTest {
 		// check player
 		var lara_out = toCheck.getAdventurers().get(1);
 		assertEquals(Orientation.SOUTH, lara_out.getOrientation());
-		assertEquals(new CartesianPosition(0, 4), lara_out.getPosition());
+		assertEquals(new Position(0, 4), lara_out.getPosition());
 
 		var indiana_out = toCheck.getAdventurers().get(0);
 		assertEquals(Orientation.SOUTH, indiana_out.getOrientation());
-		assertEquals(new CartesianPosition(0, 3), indiana_out.getPosition());
+		assertEquals(new Position(0, 3), indiana_out.getPosition());
 
 	}
 

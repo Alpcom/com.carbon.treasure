@@ -44,6 +44,13 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.ParseResult;
 
+/**
+ * 
+ * Application main class
+ * 
+ * @author aleprevost
+ *
+ */
 @Command(name = "treasure", version = "1.0", mixinStandardHelpOptions = true)
 public class TreasureCli implements Callable<Integer> {
 
@@ -77,6 +84,12 @@ public class TreasureCli implements Callable<Integer> {
 		return 0;
 	}
 
+	/**
+	 * main method call at start up
+	 * 
+	 * @param args
+	 * 
+	 */
 	public static void main(String[] args) {
 		var command = new TreasureCli();
 		var commandLine = new CommandLine(command);
@@ -85,7 +98,7 @@ public class TreasureCli implements Callable<Integer> {
 		System.exit(exitCode);
 	}
 
-	public int handleExecutionException(Exception ex, CommandLine commandLine, ParseResult parseResult)
+	private int handleExecutionException(Exception ex, CommandLine commandLine, ParseResult parseResult)
 			throws Exception {
 		LOGGER.error("An Unknown error occurs");
 		LOGGER.debug("Cause :", ex);

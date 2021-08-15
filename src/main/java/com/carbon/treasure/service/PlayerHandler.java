@@ -27,20 +27,52 @@ import com.carbon.treasure.domain.Instruction;
 import com.carbon.treasure.domain.Player;
 import com.carbon.treasure.domain.PlayerState;
 
+/**
+ * 
+ * Interface for player handling those method wil be used by {@link GameState}
+ * to handle player during game flow
+ * 
+ * @author aleprevost
+ *
+ */
 public interface PlayerHandler {
-
+	/**
+	 * @return the player current state
+	 */
 	PlayerState getCurrentState();
 
+	/**
+	 * remove list of instruction head from player state
+	 */
 	void consomeNextInstruction();
 
+	/**
+	 * @return true if and only if some instruction can be executed
+	 */
 	boolean haveRemainingInstruction();
 
+	/**
+	 * @return list of instruction 's head from player state
+	 * 
+	 */
 	Instruction getNextInstruction();
 
+	/**
+	 * 
+	 * @return player from player state
+	 * @see PlayerState#getPlayer()
+	 * @see #getCurrentState()
+	 */
 	Player getAdventurer();
 
+	/**
+	 * fire a treasure has been found : a point will be add on {@link PlayerState}
+	 */
 	void treasureFound();
 
+	/**
+	 * end player game by removing all instructions
+	 */
 	void consomeAllInstruction();
 
 }

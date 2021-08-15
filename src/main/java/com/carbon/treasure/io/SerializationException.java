@@ -25,11 +25,19 @@ package com.carbon.treasure.io;
 
 import java.io.IOException;
 
+import com.carbon.treasure.domain.GameData;
+
+/**
+ * Exception used to rethrow IOException on {@link GameData} serialization
+ * 
+ * @author aleprevost
+ *
+ */
 public class SerializationException extends RuntimeException {
 
 	private static final long serialVersionUID = 4980748236535561034L;
 
-	public SerializationException(IOException e) {
+	SerializationException(IOException e) {
 		super(e);
 	}
 

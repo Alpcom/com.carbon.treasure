@@ -40,7 +40,7 @@ import com.carbon.treasure.domain.Instruction;
 import com.carbon.treasure.domain.Orientation;
 import com.carbon.treasure.domain.Player;
 import com.carbon.treasure.domain.PlayerState;
-import com.carbon.treasure.domain.map.CartesianPosition;
+import com.carbon.treasure.domain.map.Position;
 import com.carbon.treasure.domain.map.CellFactory;
 import com.carbon.treasure.domain.map.RectangularArea;
 
@@ -79,8 +79,7 @@ class GameDataSerializationDelegate {
 		LOGGER.debug(Messages.getMessage("GameDataSerializationDelegate.Logger10"), lineToRead); //$NON-NLS-1$
 		if (strippedLine.startsWith(COMMENT_PREFIX) || strippedLine.isEmpty()) {
 			LOGGER.debug(Messages.getMessage("GameDataSerializationDelegate.Logger11")); //$NON-NLS-1$
-		}
-		if (strippedLine.startsWith(MAP_KEY)) {
+		} else if (strippedLine.startsWith(MAP_KEY)) {
 			LOGGER.debug(Messages.getMessage("GameDataSerializationDelegate.Logger12")); //$NON-NLS-1$
 			parseMap(strippedLine);
 		} else if (strippedLine.startsWith(MOUNTAIN_KEY)) {
@@ -145,8 +144,7 @@ class GameDataSerializationDelegate {
 					strippedLine, System.lineSeparator(), e.getMessage()), e);
 		}
 		var adventurer = new Player(adventurerName);
-		var adventurerState = new PlayerState(adventurer, new CartesianPosition(x, y), orientation,
-				instructions);
+		var adventurerState = new PlayerState(adventurer, new Position(x, y), orientation, instructions);
 		if (null != this.adventurers.put(adventurer, adventurerState)) {
 			throw new ParsingException(Messages.getMessage("GameDataSerializationDelegate.Logger1")); //$NON-NLS-1$
 		}
@@ -198,7 +196,7 @@ class GameDataSerializationDelegate {
 		} catch (NumberFormatException e) {
 			throw createParseTreasureException(strippedLine, e);
 		}
-		if (this.mapBuilder.addTreasure(new CartesianPosition(x, y), treasureCount)) {
+		if (this.mapBuilder.addTreasure(new Position(x, y), treasureCount)) {
 			throw new ParsingException(Messages.getMessage("GameDataSerializationDelegate.Logger20")); //$NON-NLS-1$
 		}
 		LOGGER.debug(Messages.getMessage("GameDataSerializationDelegate.Logger21"), // //$NON-NLS-1$
@@ -229,7 +227,7 @@ class GameDataSerializationDelegate {
 		} catch (NumberFormatException e) {
 			throw createParseMountainException(strippedLine, e);
 		}
-		if (!this.mapBuilder.addMountains(new CartesianPosition(x, y))) {
+		if (!this.mapBuilder.addMountains(new Position(x, y))) {
 			throw new ParsingException(Messages.getMessage("GameDataSerializationDelegate.Logger23")); //$NON-NLS-1$
 		}
 		LOGGER.debug(Messages.getMessage("GameDataSerializationDelegate.Logger24"), x, y); //$NON-NLS-1$

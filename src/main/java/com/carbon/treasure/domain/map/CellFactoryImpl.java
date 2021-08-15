@@ -23,6 +23,14 @@
  */
 package com.carbon.treasure.domain.map;
 
+/**
+ * 
+ * implementations of {@link CellFactory} that build {@link Cell} based on
+ * {@link AbstractCell}
+ * 
+ * @author aleprevost
+ *
+ */
 public class CellFactoryImpl implements CellFactory {
 
 	@Override

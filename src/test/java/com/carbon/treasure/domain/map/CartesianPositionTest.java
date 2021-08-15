@@ -34,52 +34,52 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.testing.EqualsTester;
 
-public class CartesianPositionTest {
+class CartesianPositionTest {
 
 	@Test
 	void testEquals() {
 		new EqualsTester()//
-				.addEqualityGroup(new CartesianPosition(0, 0))//
-				.addEqualityGroup(new CartesianPosition(0, 1))// o
-				.addEqualityGroup(new CartesianPosition(1, 0))//
-				.addEqualityGroup(new CartesianPosition(1, 1))//
+				.addEqualityGroup(new Position(0, 0))//
+				.addEqualityGroup(new Position(0, 1))// o
+				.addEqualityGroup(new Position(1, 0))//
+				.addEqualityGroup(new Position(1, 1))//
 				.testEquals();
 	}
 
 	@Test
 	void moveWithNullOrientation() {
-		var cartesianPosition = new CartesianPosition(0, 0);
+		var cartesianPosition = new Position(0, 0);
 		assertThrows(IllegalArgumentException.class, () -> cartesianPosition.to(1, null));
 	}
 
 	@Test
 	void moveWithNorthOrientation() {
-		var cartesianPosition = new CartesianPosition(0, 0);
-		assertEquals(new CartesianPosition(0, -2), cartesianPosition.to(2, NORTH));
+		var cartesianPosition = new Position(0, 0);
+		assertEquals(new Position(0, -2), cartesianPosition.to(2, NORTH));
 	}
 
 	@Test
 	void moveWithSouthOrientation() {
-		var cartesianPosition = new CartesianPosition(0, 0);
-		assertEquals(new CartesianPosition(0, 2), cartesianPosition.to(2, SOUTH));
+		var cartesianPosition = new Position(0, 0);
+		assertEquals(new Position(0, 2), cartesianPosition.to(2, SOUTH));
 	}
 
 	@Test
 	void moveWithEastOrientation() {
-		var cartesianPosition = new CartesianPosition(0, 0);
-		assertEquals(new CartesianPosition(2, 0), cartesianPosition.to(2, EAST));
+		var cartesianPosition = new Position(0, 0);
+		assertEquals(new Position(2, 0), cartesianPosition.to(2, EAST));
 	}
 
 	@Test
 	void moveWithWestOrientation() {
-		var cartesianPosition = new CartesianPosition(0, 0);
-		assertEquals(new CartesianPosition(-2, 0), cartesianPosition.to(2, WEST));
+		var cartesianPosition = new Position(0, 0);
+		assertEquals(new Position(-2, 0), cartesianPosition.to(2, WEST));
 	}
 
 	@Test
 	void moveNext() {
-		var cartesianPosition = new CartesianPosition(0, 0);
-		assertEquals(new CartesianPosition(1, 0), cartesianPosition.nextTo(EAST));
+		var cartesianPosition = new Position(0, 0);
+		assertEquals(new Position(1, 0), cartesianPosition.nextTo(EAST));
 	}
 
 }

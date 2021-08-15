@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-public class RectangularAreaTest {
+class RectangularAreaTest {
 
 	@ParameterizedTest //
 	@CsvSource({ //
@@ -106,7 +106,7 @@ public class RectangularAreaTest {
 	})
 
 	public void testcontains_1(int x, int y, boolean expected) {
-		var p = new CartesianPosition(x, y);
+		var p = new Position(x, y);
 		var r = new RectangularArea(-1, -1, 5, 5);
 		assertEquals(expected, r.contains(p));
 	}

@@ -39,8 +39,8 @@ public interface GameDataSerializationService {
 	 * The method read the {@link InputStream} to produce the {@link GameData}. Be
 	 * careful the {@link InputStream} will not be close.
 	 *
-	 * @param th  game data to write
-	 * @param the outputstream to write
+	 * @param data         game data to write
+	 * @param outputStream the output stream to write
 	 */
 	void serialized(GameData data, OutputStream outputStream);
 }

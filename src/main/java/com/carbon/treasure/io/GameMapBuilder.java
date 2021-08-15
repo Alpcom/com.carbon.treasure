@@ -28,35 +28,40 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.carbon.treasure.domain.map.CartesianPosition;
 import com.carbon.treasure.domain.map.Cell;
 import com.carbon.treasure.domain.map.CellFactory;
 import com.carbon.treasure.domain.map.GameMap;
 import com.carbon.treasure.domain.map.Position;
 import com.carbon.treasure.domain.map.RectangularArea;
 
-public class GameMapBuilder {
+/**
+ * delegate map builder used by {@link GameDataSerializationDelegate}
+ * 
+ * @author aleprevost
+ *
+ */
+class GameMapBuilder {
 
 	private final Map<Position, Integer> treasures = new HashMap<>();
 	private final Set<Position> mountains = new HashSet<>();
 	private RectangularArea area;
 
-	public GameMapBuilder() {
+	GameMapBuilder() {
 	}
 
-	public boolean addTreasure(Position cartesianPosition, int treasureCount) {
+	boolean addTreasure(Position cartesianPosition, int treasureCount) {
 		return null != this.treasures.put(cartesianPosition, treasureCount);
 	}
 
-	public boolean addMountains(Position cartesianPosition) {
+	boolean addMountains(Position cartesianPosition) {
 		return this.mountains.add(cartesianPosition);
 	}
 
-	public boolean containsMap() {
+	boolean containsMap() {
 		return null != this.area;
 	}
 
-	public void setArea(RectangularArea rectangularArea) {
+	void setArea(RectangularArea rectangularArea) {
 		if (this.area != null) {
 			throw new IllegalStateException();
 		}
@@ -67,7 +72,7 @@ public class GameMapBuilder {
 		var createdCell = new HashSet<Cell>(this.area.getX() * this.area.getY());
 		for (var x = this.area.getX(); x < this.area.getWidth(); x++) {
 			for (var y = this.area.getY(); y < this.area.getHeight(); y++) {
-				Position p = new CartesianPosition(x, y);
+				Position p = new Position(x, y);
 				if (this.mountains.contains(p)) {
 					if (this.treasures.containsKey(p)) {
 						throw new IllegalArgumentException("A cell can't be a mountains and a treasure");

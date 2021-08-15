@@ -35,15 +35,28 @@ public class GameData {
 	private final GameMap map;
 	private final List<PlayerState> states;
 
+	/**
+	 * create a model data that will agregate tha map with the players' states
+	 * 
+	 * @param map
+	 * @param states
+	 */
 	public GameData(GameMap map, List<PlayerState> states) {
 		this.map = map;
 		this.states = states;
 	}
 
+	/**
+	 * @return the map of the game
+	 */
 	public GameMap getMap() {
 		return this.map;
 	}
 
+	/**
+	 * @return the adventurers state this state will be updated during game
+	 *         computation
+	 */
 	public List<PlayerState> getAdventurers() {
 		return this.states;
 	}

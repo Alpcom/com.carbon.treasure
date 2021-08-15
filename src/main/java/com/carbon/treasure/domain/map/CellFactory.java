@@ -23,12 +23,36 @@
  */
 package com.carbon.treasure.domain.map;
 
+/**
+ * Factory for {@link Cell}
+ * 
+ * @author aleprevost
+ *
+ */
 public interface CellFactory {
-
+	/**
+	 * create cell that represent a mountain
+	 * 
+	 * @param p position
+	 * @return created cell
+	 */
 	Cell createMountain(Position p);
 
-	Cell createTreasure(Position p, Integer integer);
+	/**
+	 * create cell that represent a treasure
+	 * 
+	 * @param p             position
+	 * @param treasureCount number of treasure available on the cell
+	 * @return created cell
+	 */
+	Cell createTreasure(Position p, Integer treasureCount);
 
+	/**
+	 * create cell that represent a plain
+	 * 
+	 * @param p position
+	 * @return created cell
+	 */
 	Cell createPlain(Position p);
 
 }

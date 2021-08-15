@@ -44,11 +44,21 @@ public enum Orientation {
 	 */
 	WEST;
 
+	/**
+	 * Orientations are sorted by turning clockwise
+	 * 
+	 * @return the next value
+	 */
 	public Orientation next() {
 		var values = values();
 		return values[(values.length + ordinal() + 1) % values.length];
 	}
 
+	/**
+	 * Orientations are sorted by turning clockwise
+	 * 
+	 * @return the previous value
+	 */
 	public Orientation previous() {
 		var values = values();
 		return values[(values.length + ordinal() - 1) % values.length];

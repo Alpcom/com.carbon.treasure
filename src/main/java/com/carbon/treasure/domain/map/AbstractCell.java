@@ -23,13 +23,29 @@
  */
 package com.carbon.treasure.domain.map;
 
+import java.util.Objects;
+
 /**
- * Interface that provide cell features
+ * Abstract definition of {@link Cell} for {@link GameMap} this implementation
+ * expose all abstract method a provide default implementation to avoid code
+ * duplication. by the way it contains also the {@link Position} and the
+ * {@link #hashCode()} and {@link #equals(Object) } implementation for all sub
+ * classes
  * 
  * @author aleprevost
  *
  */
-public interface Cell {
+public abstract class AbstractCell implements Cell {
+	private final Position position;
+
+	/**
+	 * create an abstact cell
+	 * 
+	 * @param p
+	 */
+	public AbstractCell(Position p) {
+		this.position = p;
+	}
 
 	/**
 	 * if {@link #canRemoveATreasure()} will remove a treasure (only
@@ -37,35 +53,70 @@ public interface Cell {
 	 * 
 	 * @return true if and only if a treasure has been removed
 	 */
-	boolean removeATreasure();
+	@Override
+	public boolean removeATreasure() {
+		return false;
+	}
 
 	/**
 	 * only {@link TreasureCell} can remove a treasure
 	 * 
 	 * @return true if and only if a treasure can be removed
 	 */
-	boolean canRemoveATreasure();
+	@Override
+	public boolean canRemoveATreasure() {
+		return false;
+	}
 
 	/**
 	 * only {@link TreasureCell} can provide a non null return value
 	 * 
 	 * @return the number of treasure available to collect
 	 */
-	int getTreasureCount();
+	@Override
+	public int getTreasureCount() {
+		return 0;
+	}
 
 	/**
 	 * @return the position of the cell
 	 */
-	Position getPosition();
+	@Override
+	public Position getPosition() {
+		return this.position;
+	}
+
+	@Override
+	public final int hashCode() {
+		return Objects.hash(this.position);
+	}
+
+	@Override
+	public final boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if ((obj == null) || (getClass() != obj.getClass())) {
+			return false;
+		}
+		var other = (AbstractCell) obj;
+		return Objects.equals(this.position, other.position);
+	}
 
 	/**
 	 * @return true if and only if is an instance of {@link MountainCell}
 	 */
-	boolean isMountain();
+	@Override
+	public boolean isMountain() {
+		return false;
+	}
 
 	/**
 	 * @return true if and only if is an instance of {@link TreasureCell}
 	 */
-	boolean isTreasure();
+	@Override
+	public boolean isTreasure() {
+		return false;
+	}
 
 }

@@ -25,14 +25,31 @@ package com.carbon.treasure.domain;
 
 import java.util.Objects;
 
+/**
+ * object that represent a player
+ * 
+ * @author aleprevost
+ *
+ */
 public class Player {
 
 	private final String name;
 
+	/**
+	 * create a player from its name <br>
+	 * <b>WARNING</b>: to instance of player with the same name represent the same
+	 * player ; name is used as ID
+	 * 
+	 * @param name name of the player
+	 */
 	public Player(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * 
+	 * @return player name
+	 */
 	public String getName() {
 		return this.name;
 	}

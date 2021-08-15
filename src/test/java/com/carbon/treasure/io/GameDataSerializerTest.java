@@ -48,33 +48,33 @@ import com.carbon.treasure.domain.GameData;
 import com.carbon.treasure.domain.Orientation;
 import com.carbon.treasure.domain.Player;
 import com.carbon.treasure.domain.PlayerState;
-import com.carbon.treasure.domain.map.CartesianPosition;
+import com.carbon.treasure.domain.map.Position;
 import com.carbon.treasure.domain.map.Cell;
 import com.carbon.treasure.domain.map.CellFactory;
 import com.carbon.treasure.domain.map.CellFactoryImpl;
 import com.carbon.treasure.domain.map.GameMap;
 import com.carbon.treasure.service.GameDataSerializationService;
 
-public class GameDataSerializerTest {
+class GameDataSerializerTest {
 
 	private static GameDataSerializationService parser;
 
 	@BeforeAll
-	public static void beforeAll() {
+	static void beforeAll() {
 		GameDataSerializerTest.parser = new GameDataIOServiceImpl();
 	}
 
 	@Test
-	public void testWorkingSerialization_1() throws IOException {
+	void testWorkingSerialization_1() throws IOException {
 		CellFactory cellFactory = new CellFactoryImpl();
 		List<Cell> cells = Arrays.asList(//
-				cellFactory.createMountain(new CartesianPosition(1, 6)), //
-				cellFactory.createTreasure(new CartesianPosition(4, 2), 1), //
-				cellFactory.createTreasure(new CartesianPosition(3, 1), 0), //
-				cellFactory.createMountain(new CartesianPosition(2, 6)) //
+				cellFactory.createMountain(new Position(1, 6)), //
+				cellFactory.createTreasure(new Position(4, 2), 1), //
+				cellFactory.createTreasure(new Position(3, 1), 0), //
+				cellFactory.createMountain(new Position(2, 6)) //
 		);
 
-		var indiana = new PlayerState(new Player("Indiana"), new CartesianPosition(1, 2), Orientation.NORTH,
+		var indiana = new PlayerState(new Player("Indiana"), new Position(1, 2), Orientation.NORTH,
 				Collections.emptyList());
 		indiana.addScorePoint(3);
 		List<PlayerState> players = Arrays.asList(indiana);
@@ -108,8 +108,7 @@ public class GameDataSerializerTest {
 	@Test
 	public void testFailSerialization_2() throws IOException {
 		CellFactory cellFactory = new CellFactoryImpl();
-		List<Cell> cells = IntStream.range(0, 10000)
-				.mapToObj(i -> cellFactory.createMountain(new CartesianPosition(i, i)))//
+		List<Cell> cells = IntStream.range(0, 10000).mapToObj(i -> cellFactory.createMountain(new Position(i, i)))//
 				.collect(Collectors.toList());
 		var data = new GameData(new GameMap(new HashSet<>(cells)), Collections.emptyList());
 		var outputStream = mock(OutputStream.class);

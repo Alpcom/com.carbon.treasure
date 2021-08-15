@@ -46,8 +46,7 @@ class TreasureCliTest {
 				"-o=./target/output/treasurecli1");
 		assertEquals(0, exitCode);
 		var golden = new String(IntegrationTestResourceHelper.getInputStream("it1_golden_output").readAllBytes());
-		try (var fileInputStream = new FileInputStream(
-				Paths.get("./target/output/treasurecli1").toFile())) {
+		try (var fileInputStream = new FileInputStream(Paths.get("./target/output/treasurecli1").toFile())) {
 			var output = new String(fileInputStream.readAllBytes());
 			assertTrue(IsEqualCompressingWhiteSpace.equalToCompressingWhiteSpace(golden).matches(output));
 		}

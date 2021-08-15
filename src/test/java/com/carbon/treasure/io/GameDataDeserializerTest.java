@@ -44,7 +44,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import com.carbon.treasure.Messages;
 import com.carbon.treasure.domain.Instruction;
 import com.carbon.treasure.domain.Orientation;
-import com.carbon.treasure.domain.map.CartesianPosition;
+import com.carbon.treasure.domain.map.Position;
 import com.carbon.treasure.domain.map.GameMap;
 import com.carbon.treasure.domain.map.TreasureCell;
 import com.carbon.treasure.service.GameDataDeserializationService;
@@ -52,17 +52,17 @@ import com.carbon.treasure.unittest.UnitTestResourceHelper;
 
 import junit.framework.AssertionFailedError;
 
-public class GameDataDeserializerTest {
+class GameDataDeserializerTest {
 
 	private static GameDataDeserializationService parser;
 
 	@BeforeAll
-	public static void beforeAll() {
+	static void beforeAll() {
 		GameDataDeserializerTest.parser = new GameDataIOServiceImpl();
 	}
 
 	@Test
-	public void testWorkingParsing_1() {
+	void testWorkingParsing_1() {
 		var fis = UnitTestResourceHelper.getInputStream("parsingOk_1");
 		var parse = GameDataDeserializerTest.parser.parse(fis);
 		var map = parse.getMap();
@@ -88,7 +88,7 @@ public class GameDataDeserializerTest {
 
 		var indiana = parse.getAdventurers().stream().filter(ps -> "Indiana".equals(ps.getPlayer().getName()))
 				.findFirst().orElseThrow();
-		assertEquals(new CartesianPosition(1, 1), indiana.getPosition());
+		assertEquals(new Position(1, 1), indiana.getPosition());
 		assertEquals(Orientation.SOUTH, indiana.getOrientation());
 		List<Instruction> instructions = new ArrayList<>(indiana.getRemainingInstructions());
 		instructions.removeAll(Arrays.asList(//
@@ -104,7 +104,7 @@ public class GameDataDeserializerTest {
 	}
 
 	@Test
-	public void testWorkingParsing_2() {
+	void testWorkingParsing_2() {
 		var fis = UnitTestResourceHelper.getInputStream("parsingOk_2");
 		var parse = GameDataDeserializerTest.parser.parse(fis);
 		var map = parse.getMap();
@@ -131,7 +131,7 @@ public class GameDataDeserializerTest {
 		var lara = parse.getAdventurers().stream() //
 				.filter(ps -> "Lara".equals(ps.getPlayer().getName())) //
 				.findFirst().orElseThrow();
-		assertEquals(new CartesianPosition(1, 1), lara.getPosition());
+		assertEquals(new Position(1, 1), lara.getPosition());
 		assertEquals(Orientation.NORTH, lara.getOrientation());
 		List<Instruction> larasInstructions = new ArrayList<>(lara.getRemainingInstructions());
 		larasInstructions.removeAll(Arrays.asList(//
@@ -149,7 +149,7 @@ public class GameDataDeserializerTest {
 		var toto = parse.getAdventurers().stream()//
 				.filter(ps -> "Toto".equals(ps.getPlayer().getName())) //
 				.findFirst().orElseThrow();
-		assertEquals(new CartesianPosition(1, 1), toto.getPosition());
+		assertEquals(new Position(1, 1), toto.getPosition());
 		assertEquals(Orientation.EAST, toto.getOrientation());
 		List<Instruction> totosInstructions = new ArrayList<>(toto.getRemainingInstructions());
 		totosInstructions.removeAll(Arrays.asList(Instruction.MOVE));
@@ -158,7 +158,7 @@ public class GameDataDeserializerTest {
 		var amalya = parse.getAdventurers().stream()//
 				.filter(ps -> "Amalya".equals(ps.getPlayer().getName())) //
 				.findFirst().orElseThrow();
-		assertEquals(new CartesianPosition(1, 1), amalya.getPosition());
+		assertEquals(new Position(1, 1), amalya.getPosition());
 		assertEquals(Orientation.SOUTH, amalya.getOrientation());
 		List<Instruction> amalyasInstructions = new ArrayList<>(amalya.getRemainingInstructions());
 		amalyasInstructions.removeAll(Arrays.asList(Instruction.RIGHT));
@@ -167,7 +167,7 @@ public class GameDataDeserializerTest {
 		var nathanael = parse.getAdventurers().stream()//
 				.filter(ps -> "Nathanaël".equals(ps.getPlayer().getName())) //
 				.findFirst().orElseThrow();
-		assertEquals(new CartesianPosition(1, 1), nathanael.getPosition());
+		assertEquals(new Position(1, 1), nathanael.getPosition());
 		assertEquals(Orientation.WEST, nathanael.getOrientation());
 		List<Instruction> nathanaelsInstructions = new ArrayList<>(nathanael.getRemainingInstructions());
 		nathanaelsInstructions.removeAll(Arrays.asList(Instruction.MOVE));
@@ -191,7 +191,7 @@ public class GameDataDeserializerTest {
 
 	@ParameterizedTest
 	@MethodSource("getFailingParsingData")
-	public void testFailParsing(String fileNameToParse, String expectedFailmsg) {
+	void testFailParsing(String fileNameToParse, String expectedFailmsg) {
 		var fis = UnitTestResourceHelper.getInputStream(fileNameToParse);
 		Objects.requireNonNull(fis);
 		try {

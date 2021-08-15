@@ -23,8 +23,18 @@
  */
 package com.carbon.treasure.domain.map;
 
-public class PlainCell extends Cell {
-
+/**
+ * 
+ * {@link Cell} implementation that represent a plain cell : accessible cell
+ * 
+ * @author aleprevost
+ *
+ */
+public class PlainCell extends AbstractCell {
+	/**
+	 * @see AbstractCell#AbstractCell(Position)
+	 * @param p
+	 */
 	public PlainCell(Position p) {
 		super(p);
 	}

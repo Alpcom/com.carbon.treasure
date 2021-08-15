@@ -23,15 +23,21 @@
  */
 package com.carbon.treasure.io;
 
+/**
+ * Exception used to throw malformed input file information
+ * 
+ * @author aleprevost
+ *
+ */
 public class ParsingException extends RuntimeException {
 
 	private static final long serialVersionUID = 6901939689397945612L;
 
-	public ParsingException(String formattedLocalizedMessage, Exception object) {
+	ParsingException(String formattedLocalizedMessage, Exception object) {
 		super(formattedLocalizedMessage, object);
 	}
 
-	public ParsingException(String message) {
+	ParsingException(String message) {
 		this(message, null);
 	}
 

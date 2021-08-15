@@ -23,6 +23,13 @@
  */
 package com.carbon.treasure.domain;
 
+/**
+ * 
+ * Instruction that can be used to move a player
+ * 
+ * @author aleprevost
+ *
+ */
 public enum Instruction {
 	/**
 	 * Instruction that match with a move forward : this move follow and keep the

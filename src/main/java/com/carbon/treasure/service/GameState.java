@@ -37,7 +37,7 @@ import com.carbon.treasure.domain.PlayerState;
 import com.carbon.treasure.domain.map.GameMap;
 import com.carbon.treasure.domain.map.Position;
 
-public class GameState {
+class GameState {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GameService.class);
 
 	/**
@@ -99,7 +99,7 @@ public class GameState {
 	private Iterator<PlayerHandler> iterator;
 	private final GameMap map;
 
-	public GameState(GameData data) {
+	GameState(GameData data) {
 		data.getAdventurers().forEach(this::add);
 		this.map = data.getMap();
 	}
@@ -144,7 +144,7 @@ public class GameState {
 				this.players.stream().map(PlayerHandler::getCurrentState).collect(Collectors.toList()));
 	}
 
-	public GameState play() {
+	GameState play() {
 		while (hasNextPlayer()) {
 			var currentPlayer = nextPlayer();
 			LOGGER.debug("{} starts its turn.", currentPlayer.getAdventurer().getName());

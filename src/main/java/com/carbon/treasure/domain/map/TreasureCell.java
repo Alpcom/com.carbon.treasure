@@ -23,10 +23,25 @@
  */
 package com.carbon.treasure.domain.map;
 
+/**
+ * 
+ * {@link Cell} implementation that represent a cell that will provide point to
+ * adventurer that will move on
+ * 
+ * @author aleprevost
+ *
+ * 
+ */
 public class TreasureCell extends PlainCell {
 
 	private int treasureCount;
 
+	/**
+	 * create a new cell for position p that contains treasureCount treasures
+	 * 
+	 * @param p
+	 * @param treasureCount
+	 */
 	public TreasureCell(Position p, int treasureCount) {
 		super(p);
 		this.treasureCount = treasureCount;

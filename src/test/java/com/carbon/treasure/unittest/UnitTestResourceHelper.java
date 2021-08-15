@@ -25,11 +25,24 @@ package com.carbon.treasure.unittest;
 
 import java.io.InputStream;
 
+/**
+ * 
+ * class to access to integration test data
+ * 
+ * @author aleprevost
+ *
+ */
 public class UnitTestResourceHelper {
 	private UnitTestResourceHelper() {
 		// hide default constructor
 	}
 
+	/**
+	 * access to integration test file by name
+	 * 
+	 * @param fileNameToParse
+	 * @return an input stream that will contains fail data or null if no file found
+	 */
 	public static InputStream getInputStream(String fileNameToParse) {
 		return UnitTestResourceHelper.class.getResourceAsStream(fileNameToParse);
 	}

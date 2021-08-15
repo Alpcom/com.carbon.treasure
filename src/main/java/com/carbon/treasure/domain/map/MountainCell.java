@@ -23,8 +23,19 @@
  */
 package com.carbon.treasure.domain.map;
 
-public class MountainCell extends Cell {
-
+/**
+ * 
+ * {@link Cell} implementation that represent a mountain cell : unaccessible
+ * cell
+ * 
+ * @author aleprevost
+ *
+ */
+public class MountainCell extends AbstractCell {
+	/**
+	 * @see AbstractCell#AbstractCell(Position)
+	 * @param p
+	 */
 	public MountainCell(Position p) {
 		super(p);
 	}

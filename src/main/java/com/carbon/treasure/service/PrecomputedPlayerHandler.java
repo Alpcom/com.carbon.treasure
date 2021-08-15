@@ -29,11 +29,11 @@ import com.carbon.treasure.domain.Instruction;
 import com.carbon.treasure.domain.Player;
 import com.carbon.treasure.domain.PlayerState;
 
-public class PrecomputedPlayerHandler implements PlayerHandler {
+class PrecomputedPlayerHandler implements PlayerHandler {
 
 	private final PlayerState adventurerState;
 
-	public PrecomputedPlayerHandler(PlayerState adventurerInitialState) {
+	PrecomputedPlayerHandler(PlayerState adventurerInitialState) {
 		this.adventurerState = adventurerInitialState;
 	}
 

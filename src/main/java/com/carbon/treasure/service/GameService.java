@@ -25,7 +25,20 @@ package com.carbon.treasure.service;
 
 import com.carbon.treasure.domain.GameData;
 
+/**
+ * 
+ * A service to run a game from game Data
+ * 
+ * @author aleprevost
+ *
+ */
 public class GameService {
+	/**
+	 * process the game
+	 * 
+	 * @param data the input data
+	 * @return the post game data
+	 */
 	public GameData play(GameData data) {
 		return new GameState(data).play().toData();
 	}

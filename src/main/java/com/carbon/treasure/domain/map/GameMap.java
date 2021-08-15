@@ -24,10 +24,18 @@
 package com.carbon.treasure.domain.map;
 
 import java.util.Collections;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
+/**
+ * 
+ * the data realted to the map of the game
+ * 
+ * @author aleprevost
+ *
+ */
 public class GameMap {
 
 	private static final class PositionCellFilter implements Predicate<Cell> {
@@ -47,18 +55,44 @@ public class GameMap {
 
 	private final Set<Cell> cases;
 
+	/**
+	 * create a Map from the set of cells<br>
+	 * <b>all cells should be created no blank/plain cell will be created</b>
+	 * 
+	 * @param cases
+	 */
 	public GameMap(Set<Cell> cases) {
 		this.cases = Collections.unmodifiableSet(cases);
 	}
 
+	/**
+	 * @return all cells available in the map
+	 */
 	public Set<Cell> getCells() {
 		return this.cases;
 	}
 
+	/**
+	 * Retrieve cell from its coordinate
+	 * 
+	 * @param x cell's x coordinate
+	 * @param y cell's y coordinate
+	 * @return found cell
+	 * @see #getCellAt(Position)
+	 * @see Optional#orElseThrow()
+	 * @throws NoSuchElementException if no cell is available at choosen coordinate
+	 */
 	public Cell getCellAt(int x, int y) {
-		return getCellAt(new CartesianPosition(x, y)).orElseThrow();
+		return getCellAt(new Position(x, y)).orElseThrow();
 	}
 
+	/**
+	 * try to get cell at position P
+	 * 
+	 * @see #getCellAt(int, int)
+	 * @param p position of wanted cell
+	 * @return optional of cell that will contains a cell if found else empty
+	 */
 	public Optional<Cell> getCellAt(Position p) {
 		return this.cases.stream().filter(new PositionCellFilter(p)).findFirst();
 	}
