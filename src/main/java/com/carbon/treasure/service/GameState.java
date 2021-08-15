@@ -27,16 +27,13 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.carbon.treasure.domain.GameData;
-import com.carbon.treasure.domain.Instruction;
 import com.carbon.treasure.domain.PlayerState;
-import com.carbon.treasure.domain.map.Cell;
 import com.carbon.treasure.domain.map.GameMap;
 import com.carbon.treasure.domain.map.Position;
 
@@ -46,7 +43,7 @@ public class GameState {
 	/**
 	 * cyclique iterator to handle game turn it will skip player with no more
 	 * instruction to execute
-	 * 
+	 *
 	 * @author aleprevost
 	 *
 	 */
@@ -61,40 +58,39 @@ public class GameState {
 		private PlayerHandler nextElement;
 
 		public PlayerIterator(Iterable<PlayerHandler> iterator) {
-			initial = iterator;
-			currentIterator = initial.iterator();
+			this.initial = iterator;
+			this.currentIterator = this.initial.iterator();
 		}
 
 		@Override
 		public boolean hasNext() {
-			hasNextCalled = true;
-			boolean iteratorNotReset = true;
-			boolean elementsNotFound = true;
-			while (elementsNotFound && (currentIterator.hasNext() || iteratorNotReset)) {
-				if (currentIterator.hasNext()) {
-					nextElement = currentIterator.next();
-					elementsNotFound = !nextElement.haveRemainingInstruction();
+			this.hasNextCalled = true;
+			var iteratorNotReset = true;
+			var elementsNotFound = true;
+			while (elementsNotFound && (this.currentIterator.hasNext() || iteratorNotReset)) {
+				if (this.currentIterator.hasNext()) {
+					this.nextElement = this.currentIterator.next();
+					elementsNotFound = !this.nextElement.haveRemainingInstruction();
 				} else {
-					currentIterator = initial.iterator();
+					this.currentIterator = this.initial.iterator();
 					iteratorNotReset = false;
 				}
 			}
 			if (elementsNotFound) {
 				return false;
-			} else {
-				LOGGER.debug("{} will not play : no more instruction to execute.",
-						nextElement.getAdventurer().getName());
-				return true;
 			}
+			LOGGER.debug("{} will not play : no more instruction to execute.",
+					this.nextElement.getAdventurer().getName());
+			return true;
 		}
 
 		@Override
 		public PlayerHandler next() {
-			if (!hasNextCalled) {
+			if (!this.hasNextCalled) {
 				hasNext();
 			}
-			hasNextCalled = false;
-			return nextElement;
+			this.hasNextCalled = false;
+			return this.nextElement;
 		}
 
 	}
@@ -109,50 +105,51 @@ public class GameState {
 	}
 
 	private boolean add(PlayerState adventurerState) {
-		PrecomputedPlayerHandler player = new PrecomputedPlayerHandler(adventurerState);
-		boolean playerAlreadyPresent = players.stream()//
+		var player = new PrecomputedPlayerHandler(adventurerState);
+		var playerAlreadyPresent = this.players.stream()//
 				.map(PlayerHandler::getAdventurer)//
 				.anyMatch(adventurerState.getPlayer()::equals);
 		if (!playerAlreadyPresent) {
-			players.add(player);
+			this.players.add(player);
 		}
 		return !playerAlreadyPresent;
 	}
 
 	/**
 	 * default package for test handle
-	 * 
+	 *
 	 * @return
 	 */
 	PlayerHandler nextPlayer() {
-		if (iterator == null) {
-			iterator = new PlayerIterator(new LinkedList<>(players));
+		if (this.iterator == null) {
+			this.iterator = new PlayerIterator(new LinkedList<>(this.players));
 		}
-		return iterator.next();
+		return this.iterator.next();
 	}
 
 	boolean hasNextPlayer() {
-		if (iterator == null) {
-			iterator = new PlayerIterator(new LinkedList<>(players));
+		if (this.iterator == null) {
+			this.iterator = new PlayerIterator(new LinkedList<>(this.players));
 		}
-		return iterator.hasNext();
+		return this.iterator.hasNext();
 	}
 
 	/**
 	 * convert to GameData that will be ready to be dump
-	 * 
+	 *
 	 * @return current state data
 	 */
 	public GameData toData() {
-		return new GameData(map, players.stream().map(PlayerHandler::getCurrentState).collect(Collectors.toList()));
+		return new GameData(this.map,
+				this.players.stream().map(PlayerHandler::getCurrentState).collect(Collectors.toList()));
 	}
 
 	public GameState play() {
 		while (hasNextPlayer()) {
-			PlayerHandler currentPlayer = nextPlayer();
+			var currentPlayer = nextPlayer();
 			LOGGER.debug("{} starts its turn.", currentPlayer.getAdventurer().getName());
-			Instruction instructionToApply = currentPlayer.getNextInstruction();
-			PlayerState currentState = currentPlayer.getCurrentState();
+			var instructionToApply = currentPlayer.getNextInstruction();
+			var currentState = currentPlayer.getCurrentState();
 			switch (instructionToApply) {
 			case LEFT:
 				currentState.setOrientation(currentState.getOrientation().previous());
@@ -167,9 +164,9 @@ public class GameState {
 				currentPlayer.consomeNextInstruction();
 				break;
 			case MOVE:
-				Position targetPosition = currentState.getPosition().nextTo(currentState.getOrientation());
-				Optional<Cell> targetedCellOpt = map.getCellAt(targetPosition);
-				Cell targetedCell = targetedCellOpt.get();
+				var targetPosition = currentState.getPosition().nextTo(currentState.getOrientation());
+				var targetedCellOpt = this.map.getCellAt(targetPosition);
+				var targetedCell = targetedCellOpt.get();
 				if (!targetedCellOpt.isEmpty() && !targetedCell.isMountain()) {
 					if (isCellAvailable(targetPosition)) {
 						currentState.setPosition(targetPosition);
@@ -198,7 +195,7 @@ public class GameState {
 	}
 
 	private boolean couldBecomeFree(Position targetPosition) {
-		return !players.stream() //
+		return !this.players.stream() //
 				.map(PlayerHandler::getCurrentState) //
 				.filter(s -> s.getPosition().equals(targetPosition)) //
 				.findAny() //
@@ -207,7 +204,7 @@ public class GameState {
 	}
 
 	private boolean isCellAvailable(Position targetPosition) {
-		return players.stream()//
+		return this.players.stream()//
 				.map(PlayerHandler::getCurrentState)//
 				.map(PlayerState::getPosition) //
 				.noneMatch(targetPosition::equals);

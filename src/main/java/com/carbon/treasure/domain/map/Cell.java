@@ -45,24 +45,24 @@ public abstract class Cell {
 	}
 
 	public Position getPosition() {
-		return position;
+		return this.position;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(position);
+		return Objects.hash(this.position);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if ((obj == null) || (getClass() != obj.getClass())) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Cell other = (Cell) obj;
-		return Objects.equals(position, other.position);
+		}
+		var other = (Cell) obj;
+		return Objects.equals(this.position, other.position);
 	}
 
 	public boolean isMountain() {

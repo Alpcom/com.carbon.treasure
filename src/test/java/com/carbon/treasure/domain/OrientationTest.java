@@ -27,7 +27,7 @@ import static com.carbon.treasure.domain.Orientation.EAST;
 import static com.carbon.treasure.domain.Orientation.NORTH;
 import static com.carbon.treasure.domain.Orientation.SOUTH;
 import static com.carbon.treasure.domain.Orientation.WEST;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 

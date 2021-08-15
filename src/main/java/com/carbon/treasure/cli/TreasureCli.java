@@ -23,7 +23,6 @@
  */
 package com.carbon.treasure.cli;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -57,17 +56,17 @@ public class TreasureCli implements Callable<Integer> {
 
 	@Override
 	public Integer call() throws IOException {
-		if (outputFilePath == null) {
-			outputFilePath = Paths.get(".", "output.treasure");
+		if (this.outputFilePath == null) {
+			this.outputFilePath = Paths.get(".", "output.treasure");
 		}
-		GameDataIOServiceImpl io = new GameDataIOServiceImpl();
+		var io = new GameDataIOServiceImpl();
 		GameData data;
 		try (InputStream inputStream = new FileInputStream(this.inputFilePath.toFile())) {
 			data = io.parse(inputStream);
 		}
-		GameService service = new GameService();
-		GameData play = service.play(data);
-		File outputFile = this.outputFilePath.toFile();
+		var service = new GameService();
+		var play = service.play(data);
+		var outputFile = this.outputFilePath.toFile();
 		if (!outputFile.exists()) {
 			outputFile.getParentFile().mkdirs();
 			outputFile.createNewFile();
@@ -79,8 +78,8 @@ public class TreasureCli implements Callable<Integer> {
 	}
 
 	public static void main(String[] args) {
-		TreasureCli command = new TreasureCli();
-		CommandLine commandLine = new CommandLine(command);
+		var command = new TreasureCli();
+		var commandLine = new CommandLine(command);
 		commandLine.setExecutionExceptionHandler(command::handleExecutionException);
 		var exitCode = commandLine.execute(args);
 		System.exit(exitCode);

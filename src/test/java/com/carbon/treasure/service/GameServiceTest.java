@@ -52,7 +52,7 @@ class GameServiceTest {
 	@Test
 	void test_1() {
 
-		GameService service = new GameService();
+		var service = new GameService();
 		CellFactory cellFactory = new CellFactoryImpl();
 
 		List<Cell> cells = Arrays.asList(//
@@ -74,21 +74,21 @@ class GameServiceTest {
 
 		);
 
-		PlayerState indiana = new PlayerState(new Player("Indiana"), new CartesianPosition(1, 1), Orientation.SOUTH,
+		var indiana = new PlayerState(new Player("Indiana"), new CartesianPosition(1, 1), Orientation.SOUTH,
 				new ArrayList<>(Arrays.asList(MOVE, MOVE, RIGHT, MOVE, RIGHT, MOVE, LEFT, LEFT, MOVE)));//
 		List<PlayerState> players = Arrays.asList(indiana);
-		GameData data = new GameData(new GameMap(new HashSet<>(cells)), players);
+		var data = new GameData(new GameMap(new HashSet<>(cells)), players);
 
-		GameData toCheck = service.play(data);
+		var toCheck = service.play(data);
 		// check map
-		Cell treasure1 = toCheck.getMap().getCellAt(0, 3);
+		var treasure1 = toCheck.getMap().getCellAt(0, 3);
 		assertTrue(treasure1.isTreasure());
 		assertFalse(treasure1.canRemoveATreasure());
-		Cell treasure2 = toCheck.getMap().getCellAt(1, 3);
+		var treasure2 = toCheck.getMap().getCellAt(1, 3);
 		assertTrue(treasure2.isTreasure());
 		assertEquals(2, treasure2.getTreasureCount());
 		// check player
-		PlayerState indiana_out = toCheck.getAdventurers().get(0);
+		var indiana_out = toCheck.getAdventurers().get(0);
 		assertEquals(Orientation.SOUTH, indiana_out.getOrientation());
 		assertEquals(new CartesianPosition(0, 3), indiana_out.getPosition());
 		assertEquals(3, indiana_out.getScorePoint());
@@ -98,7 +98,7 @@ class GameServiceTest {
 	@Test
 	void test_2() {
 
-		GameService service = new GameService();
+		var service = new GameService();
 		CellFactory cellFactory = new CellFactoryImpl();
 
 		List<Cell> cells = Arrays.asList(//
@@ -111,21 +111,21 @@ class GameServiceTest {
 
 		);
 
-		PlayerState indiana = new PlayerState(new Player("Indiana"), new CartesianPosition(0, 0), Orientation.SOUTH,
+		var indiana = new PlayerState(new Player("Indiana"), new CartesianPosition(0, 0), Orientation.SOUTH,
 				new ArrayList<>(Arrays.asList(MOVE, MOVE, MOVE, MOVE)));//
-		PlayerState lara = new PlayerState(new Player("Lara"), new CartesianPosition(0, 1), Orientation.SOUTH,
+		var lara = new PlayerState(new Player("Lara"), new CartesianPosition(0, 1), Orientation.SOUTH,
 				new ArrayList<>(Arrays.asList(MOVE, MOVE, LEFT, LEFT, LEFT, LEFT, MOVE)));//
 		List<PlayerState> players = Arrays.asList(indiana, lara);
-		GameData data = new GameData(new GameMap(new HashSet<>(cells)), players);
+		var data = new GameData(new GameMap(new HashSet<>(cells)), players);
 
-		GameData toCheck = service.play(data);
+		var toCheck = service.play(data);
 
 		// check player
-		PlayerState lara_out = toCheck.getAdventurers().get(1);
+		var lara_out = toCheck.getAdventurers().get(1);
 		assertEquals(Orientation.SOUTH, lara_out.getOrientation());
 		assertEquals(new CartesianPosition(0, 4), lara_out.getPosition());
-		
-		PlayerState indiana_out = toCheck.getAdventurers().get(0);
+
+		var indiana_out = toCheck.getAdventurers().get(0);
 		assertEquals(Orientation.SOUTH, indiana_out.getOrientation());
 		assertEquals(new CartesianPosition(0, 3), indiana_out.getPosition());
 

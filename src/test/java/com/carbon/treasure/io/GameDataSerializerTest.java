@@ -74,12 +74,12 @@ public class GameDataSerializerTest {
 				cellFactory.createMountain(new CartesianPosition(2, 6)) //
 		);
 
-		PlayerState indiana = new PlayerState(new Player("Indiana"), new CartesianPosition(1, 2), Orientation.NORTH,
+		var indiana = new PlayerState(new Player("Indiana"), new CartesianPosition(1, 2), Orientation.NORTH,
 				Collections.emptyList());
 		indiana.addScorePoint(3);
 		List<PlayerState> players = Arrays.asList(indiana);
-		GameData data = new GameData(new GameMap(new HashSet<>(cells)), players);
-		try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+		var data = new GameData(new GameMap(new HashSet<>(cells)), players);
+		try (var outputStream = new ByteArrayOutputStream()) {
 			parser.serialized(data, outputStream);
 			assertEquals("C - 5 - 7" + System.lineSeparator() //
 					+ "M - 2 - 6" + System.lineSeparator() + "M - 1 - 6" + System.lineSeparator()
@@ -94,12 +94,12 @@ public class GameDataSerializerTest {
 
 	@Test
 	public void testFailSerialization_1() throws IOException {
-		GameData data = mock(GameData.class);
+		var data = mock(GameData.class);
 		doReturn(Collections.emptyList()).when(data).getAdventurers();
-		GameMap map = mock(GameMap.class);
+		var map = mock(GameMap.class);
 		doReturn(map).when(data).getMap();
 		doReturn(Collections.emptySet()).when(map).getCells();
-		OutputStream outputStream = mock(OutputStream.class);
+		var outputStream = mock(OutputStream.class);
 		doThrow(IOException.class).when(outputStream).write(any(byte[].class), anyInt(), anyInt());
 
 		assertThrows(SerializationException.class, () -> parser.serialized(data, outputStream));
@@ -111,8 +111,8 @@ public class GameDataSerializerTest {
 		List<Cell> cells = IntStream.range(0, 10000)
 				.mapToObj(i -> cellFactory.createMountain(new CartesianPosition(i, i)))//
 				.collect(Collectors.toList());
-		GameData data = new GameData(new GameMap(new HashSet<>(cells)), Collections.emptyList());
-		OutputStream outputStream = mock(OutputStream.class);
+		var data = new GameData(new GameMap(new HashSet<>(cells)), Collections.emptyList());
+		var outputStream = mock(OutputStream.class);
 		doThrow(IOException.class).when(outputStream).write(any(byte[].class), anyInt(), anyInt());
 
 		assertThrows(SerializationException.class, () -> parser.serialized(data, outputStream));

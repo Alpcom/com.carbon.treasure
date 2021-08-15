@@ -45,37 +45,37 @@ public class GameMapBuilder {
 	}
 
 	public boolean addTreasure(Position cartesianPosition, int treasureCount) {
-		return null != treasures.put(cartesianPosition, treasureCount);
+		return null != this.treasures.put(cartesianPosition, treasureCount);
 	}
 
 	public boolean addMountains(Position cartesianPosition) {
-		return mountains.add(cartesianPosition);
+		return this.mountains.add(cartesianPosition);
 	}
 
 	public boolean containsMap() {
-		return null != area;
+		return null != this.area;
 	}
 
 	public void setArea(RectangularArea rectangularArea) {
-		if (area != null) {
+		if (this.area != null) {
 			throw new IllegalStateException();
 		}
 		this.area = rectangularArea;
 	}
 
 	public GameMap build(CellFactory cellFactory) {
-		HashSet<Cell> createdCell = new HashSet<>(area.getX() * area.getY());
-		for (int x = area.getX(); x < area.getWidth(); x++) {
-			for (int y = area.getY(); y < area.getHeight(); y++) {
+		var createdCell = new HashSet<Cell>(this.area.getX() * this.area.getY());
+		for (var x = this.area.getX(); x < this.area.getWidth(); x++) {
+			for (var y = this.area.getY(); y < this.area.getHeight(); y++) {
 				Position p = new CartesianPosition(x, y);
-				if (mountains.contains(p)) {
-					if (treasures.containsKey(p)) {
+				if (this.mountains.contains(p)) {
+					if (this.treasures.containsKey(p)) {
 						throw new IllegalArgumentException("A cell can't be a mountains and a treasure");
 					}
 					createdCell.add(cellFactory.createMountain(p));
-				} else if (treasures.containsKey(p)) {
-					createdCell.add(cellFactory.createTreasure(p, treasures.get(p)));
-				}else {
+				} else if (this.treasures.containsKey(p)) {
+					createdCell.add(cellFactory.createTreasure(p, this.treasures.get(p)));
+				} else {
 					createdCell.add(cellFactory.createPlain(p));
 				}
 			}

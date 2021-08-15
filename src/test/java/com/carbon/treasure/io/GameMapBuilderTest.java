@@ -36,7 +36,7 @@ class GameMapBuilderTest {
 
 	@Test
 	void testConflictBetweenTreasureAndMountain() {
-		GameMapBuilder builder = new GameMapBuilder();
+		var builder = new GameMapBuilder();
 		builder.setArea(new RectangularArea(0, 0, 2, 2));
 		builder.addMountains(new CartesianPosition(1, 1));
 		builder.addTreasure(new CartesianPosition(1, 1), 1);
@@ -45,7 +45,7 @@ class GameMapBuilderTest {
 
 	@Test
 	void testTwiceSetArea() {
-		GameMapBuilder builder = new GameMapBuilder();
+		var builder = new GameMapBuilder();
 		builder.setArea(mock(RectangularArea.class));
 		assertThrows(IllegalStateException.class, () -> builder.setArea(mock(RectangularArea.class)));
 	}

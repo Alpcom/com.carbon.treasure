@@ -61,7 +61,8 @@ public class CartesianPosition implements Position {
 		}
 		if (orientation == Orientation.NORTH) {
 			return new CartesianPosition(this.x, this.y - d);
-		} else if (orientation == Orientation.SOUTH) {
+		}
+		if (orientation == Orientation.SOUTH) {
 			return new CartesianPosition(this.x, this.y + d);
 		} else if (orientation == Orientation.WEST) {
 			return new CartesianPosition(this.x - d, this.y);
@@ -78,7 +79,7 @@ public class CartesianPosition implements Position {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(x, y);
+		return Objects.hash(this.x, this.y);
 	}
 
 	/*
@@ -91,10 +92,7 @@ public class CartesianPosition implements Position {
 		if (this == obj) {
 			return true;
 		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if ((obj == null) || (getClass() != obj.getClass())) {
 			return false;
 		}
 		var other = (CartesianPosition) obj;

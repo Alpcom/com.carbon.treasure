@@ -23,7 +23,8 @@
  */
 package com.carbon.treasure.cli;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -44,10 +45,10 @@ class TreasureCliTest {
 				"-i=./src/test/resources/com/carbon/treasure/integrationTest/it1", //
 				"-o=./target/output/treasurecli1");
 		assertEquals(0, exitCode);
-		String golden = new String(IntegrationTestResourceHelper.getInputStream("it1_golden_output").readAllBytes());
-		try (FileInputStream fileInputStream = new FileInputStream(
+		var golden = new String(IntegrationTestResourceHelper.getInputStream("it1_golden_output").readAllBytes());
+		try (var fileInputStream = new FileInputStream(
 				Paths.get("./target/output/treasurecli1").toFile())) {
-			String output = new String(fileInputStream.readAllBytes());
+			var output = new String(fileInputStream.readAllBytes());
 			assertTrue(IsEqualCompressingWhiteSpace.equalToCompressingWhiteSpace(golden).matches(output));
 		}
 

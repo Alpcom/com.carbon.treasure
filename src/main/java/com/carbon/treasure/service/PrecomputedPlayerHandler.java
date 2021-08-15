@@ -39,49 +39,46 @@ public class PrecomputedPlayerHandler implements PlayerHandler {
 
 	@Override
 	public PlayerState getCurrentState() {
-		return adventurerState;
+		return this.adventurerState;
 	}
 
 	@Override
 	public Player getAdventurer() {
-		return adventurerState.getPlayer();
+		return this.adventurerState.getPlayer();
 	}
 
 	@Override
 	public Instruction getNextInstruction() {
 		if (haveRemainingInstruction()) {
-			return adventurerState.getRemainingInstructions().get(0);
-		} else {
-			throw new NoSuchElementException();
+			return this.adventurerState.getRemainingInstructions().get(0);
 		}
+		throw new NoSuchElementException();
 	}
 
 	@Override
 	public boolean haveRemainingInstruction() {
-		return !adventurerState.getRemainingInstructions().isEmpty();
+		return !this.adventurerState.getRemainingInstructions().isEmpty();
 	}
 
 	@Override
 	public void consomeNextInstruction() {
-		if (haveRemainingInstruction()) {
-			adventurerState.getRemainingInstructions().remove(0);
-		} else {
+		if (!haveRemainingInstruction()) {
 			throw new NoSuchElementException();
 		}
+		this.adventurerState.getRemainingInstructions().remove(0);
 	}
 
 	@Override
 	public void treasureFound() {
-		adventurerState.addScorePoint(1);
+		this.adventurerState.addScorePoint(1);
 	}
 
 	@Override
 	public void consomeAllInstruction() {
-		if (haveRemainingInstruction()) {
-			adventurerState.getRemainingInstructions().clear();
-		} else {
+		if (!haveRemainingInstruction()) {
 			throw new NoSuchElementException();
 		}
+		this.adventurerState.getRemainingInstructions().clear();
 
 	}
 }

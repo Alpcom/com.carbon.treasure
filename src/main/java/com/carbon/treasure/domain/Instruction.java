@@ -35,8 +35,8 @@ public enum Instruction {
 	 */
 	RIGHT,
 	/**
-	 * Instruction that match with doing a quarter turn to the left on itself :
-	 * this move change the orientation of its target but the position is unchanged
+	 * Instruction that match with doing a quarter turn to the left on itself : this
+	 * move change the orientation of its target but the position is unchanged
 	 */
 	LEFT
 

@@ -33,7 +33,7 @@ import com.carbon.treasure.domain.map.GameMap;
 public class GameData {
 
 	private final GameMap map;
-	private List<PlayerState> states;
+	private final List<PlayerState> states;
 
 	public GameData(GameMap map, List<PlayerState> states) {
 		this.map = map;
@@ -41,11 +41,11 @@ public class GameData {
 	}
 
 	public GameMap getMap() {
-		return map;
+		return this.map;
 	}
 
 	public List<PlayerState> getAdventurers() {
-		return states;
+		return this.states;
 	}
 
 }

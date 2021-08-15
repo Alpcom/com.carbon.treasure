@@ -38,8 +38,8 @@ class CellTest {
 
 	@Test
 	void testEquality() {
-		Position p = Mockito.mock(Position.class);
-		Position p1 = Mockito.mock(Position.class);
+		var p = Mockito.mock(Position.class);
+		var p1 = Mockito.mock(Position.class);
 
 		new EqualsTester()//
 				.addEqualityGroup(new PlainCell(p), new PlainCell(p))//
@@ -53,9 +53,9 @@ class CellTest {
 
 	@Test
 	void testPlainCell() {
-		Position p = Mockito.mock(Position.class);
+		var p = Mockito.mock(Position.class);
 		doReturn("p").when(p).toString();
-		PlainCell cell = new PlainCell(p);
+		var cell = new PlainCell(p);
 		assertFalse(cell.removeATreasure());
 		assertFalse(cell.canRemoveATreasure());
 		assertFalse(cell.isMountain());
@@ -67,9 +67,9 @@ class CellTest {
 
 	@Test
 	void testMountainCell() {
-		Position p = Mockito.mock(Position.class);
+		var p = Mockito.mock(Position.class);
 		doReturn("p").when(p).toString();
-		MountainCell cell = new MountainCell(p);
+		var cell = new MountainCell(p);
 		assertFalse(cell.removeATreasure());
 		assertFalse(cell.canRemoveATreasure());
 		assertTrue(cell.isMountain());
@@ -81,9 +81,9 @@ class CellTest {
 
 	@Test
 	void testTreasureCell() {
-		Position p = Mockito.mock(Position.class);
+		var p = Mockito.mock(Position.class);
 		doReturn("p").when(p).toString();
-		TreasureCell cell = new TreasureCell(p, 3);
+		var cell = new TreasureCell(p, 3);
 		assertTrue(cell.canRemoveATreasure());
 		assertEquals(3, cell.getTreasureCount());
 		assertTrue(cell.removeATreasure());

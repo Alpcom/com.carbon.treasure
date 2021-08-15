@@ -41,12 +41,12 @@ class PlayerStateTest {
 
 	@Test
 	void testEquals() {
-		Player toto = new Player("toto");
-		Player tata = new Player("tata");
+		var toto = new Player("toto");
+		var tata = new Player("tata");
 		List<Instruction> empInstr = Collections.emptyList();
 		List<Instruction> instr = Arrays.asList(Instruction.MOVE);
-		Position p1 = mock(Position.class);
-		Position p2 = mock(Position.class);
+		var p1 = mock(Position.class);
+		var p2 = mock(Position.class);
 		new EqualsTester()//
 				.addEqualityGroup(//
 						new PlayerState(toto, p1, NORTH, empInstr), //
@@ -71,10 +71,10 @@ class PlayerStateTest {
 
 	@Test
 	void testSetOrientation() {
-		Player toto = new Player("toto");
+		var toto = new Player("toto");
 		List<Instruction> instr = Arrays.asList(Instruction.MOVE);
-		Position p1 = mock(Position.class);
-		PlayerState state = new PlayerState(toto, p1, NORTH, instr);
+		var p1 = mock(Position.class);
+		var state = new PlayerState(toto, p1, NORTH, instr);
 		assertEquals(NORTH, state.getOrientation());
 		state.setOrientation(SOUTH);
 		assertEquals(SOUTH, state.getOrientation());
@@ -82,11 +82,11 @@ class PlayerStateTest {
 
 	@Test
 	void testSetPosition() {
-		Player toto = new Player("toto");
+		var toto = new Player("toto");
 		List<Instruction> instr = Arrays.asList(Instruction.MOVE);
-		Position p1 = mock(Position.class);
-		Position p2 = mock(Position.class);
-		PlayerState state = new PlayerState(toto, p1, NORTH, instr);
+		var p1 = mock(Position.class);
+		var p2 = mock(Position.class);
+		var state = new PlayerState(toto, p1, NORTH, instr);
 		assertEquals(p1, state.getPosition());
 		state.setPosition(p2);
 		assertEquals(p2, state.getPosition());

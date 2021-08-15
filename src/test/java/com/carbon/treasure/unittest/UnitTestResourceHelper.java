@@ -26,12 +26,12 @@ package com.carbon.treasure.unittest;
 import java.io.InputStream;
 
 public class UnitTestResourceHelper {
-    private UnitTestResourceHelper() {
-	// hide default constructor
-    }
+	private UnitTestResourceHelper() {
+		// hide default constructor
+	}
 
-    public static InputStream getInputStream(String fileNameToParse) {
-	return UnitTestResourceHelper.class.getResourceAsStream(fileNameToParse);
-    }
+	public static InputStream getInputStream(String fileNameToParse) {
+		return UnitTestResourceHelper.class.getResourceAsStream(fileNameToParse);
+	}
 
 }

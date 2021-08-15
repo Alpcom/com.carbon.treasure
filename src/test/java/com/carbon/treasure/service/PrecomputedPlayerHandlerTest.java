@@ -46,14 +46,14 @@ class PrecomputedPlayerHandlerTest {
 
 	@Test
 	void testInitialState() {
-		Player player = mock(Player.class);
-		PlayerState state = mock(PlayerState.class);
+		var player = mock(Player.class);
+		var state = mock(PlayerState.class);
 		doReturn(player).when(state).getPlayer();
-		Instruction instr1 = Instruction.LEFT;
-		Instruction instr2 = Instruction.RIGHT;
+		var instr1 = Instruction.LEFT;
+		var instr2 = Instruction.RIGHT;
 		List<Instruction> asList = Arrays.asList(instr1, instr2);
 		doReturn(asList).when(state).getRemainingInstructions();
-		PrecomputedPlayerHandler objTotest = new PrecomputedPlayerHandler(state);
+		var objTotest = new PrecomputedPlayerHandler(state);
 
 		// check inital state
 		assertSame(state, objTotest.getCurrentState());
@@ -64,14 +64,14 @@ class PrecomputedPlayerHandlerTest {
 
 	@Test
 	void testGetterDoesNotChangeStatus() {
-		Player player = mock(Player.class);
-		PlayerState state = mock(PlayerState.class);
+		var player = mock(Player.class);
+		var state = mock(PlayerState.class);
 		doReturn(player).when(state).getPlayer();
-		Instruction instr1 = Instruction.LEFT;
-		Instruction instr2 = Instruction.RIGHT;
+		var instr1 = Instruction.LEFT;
+		var instr2 = Instruction.RIGHT;
 		List<Instruction> asList = Arrays.asList(instr1, instr2);
 		doReturn(asList).when(state).getRemainingInstructions();
-		PrecomputedPlayerHandler objTotest = new PrecomputedPlayerHandler(state);
+		var objTotest = new PrecomputedPlayerHandler(state);
 
 		// check that getNext does not change state
 		assertSame(instr1, objTotest.getNextInstruction());
@@ -83,14 +83,14 @@ class PrecomputedPlayerHandlerTest {
 
 	@Test
 	void testInstructionConsumption() {
-		Player player = mock(Player.class);
-		PlayerState state = mock(PlayerState.class);
+		var player = mock(Player.class);
+		var state = mock(PlayerState.class);
 		doReturn(player).when(state).getPlayer();
-		Instruction instr1 = Instruction.LEFT;
-		Instruction instr2 = Instruction.RIGHT;
+		var instr1 = Instruction.LEFT;
+		var instr2 = Instruction.RIGHT;
 		List<Instruction> asList = new LinkedList<>(Arrays.asList(instr1, instr2));
 		doReturn(asList).when(state).getRemainingInstructions();
-		PrecomputedPlayerHandler objTotest = new PrecomputedPlayerHandler(state);
+		var objTotest = new PrecomputedPlayerHandler(state);
 
 		// check instruction consumption
 		assertDoesNotThrow(objTotest::consomeNextInstruction);

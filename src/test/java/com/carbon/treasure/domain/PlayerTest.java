@@ -31,7 +31,7 @@ class PlayerTest {
 
 	@Test
 	void testEquals() {
-		String toto = "toto";
+		var toto = "toto";
 		new EqualsTester()//
 				.addEqualityGroup(new Player(toto), new Player(toto))//
 				.addEqualityGroup(new Player(null))//

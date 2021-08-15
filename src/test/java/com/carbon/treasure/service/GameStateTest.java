@@ -45,16 +45,16 @@ class GameStateTest {
 
 	@Test
 	void testCustomIterator() {
-		GameData data = mock(GameData.class);
+		var data = mock(GameData.class);
 		List<PlayerState> states = Arrays.asList(mockPlayerState(Arrays.asList(LEFT, LEFT)), //
 				mockPlayerState(Arrays.asList(MOVE)), //
 				mockPlayerState(Arrays.asList(RIGHT, RIGHT, RIGHT)));
 		doReturn(states).when(data).getAdventurers();
-		GameState state = new GameState(data);
+		var state = new GameState(data);
 
-		LinkedList<Instruction> playedInstruction = new LinkedList<>();
+		var playedInstruction = new LinkedList<Instruction>();
 		while (state.hasNextPlayer()) {
-			PlayerHandler nextPlayer = state.nextPlayer();
+			var nextPlayer = state.nextPlayer();
 			playedInstruction.add(nextPlayer.getNextInstruction());
 			nextPlayer.consomeNextInstruction();
 		}
@@ -63,7 +63,7 @@ class GameStateTest {
 	}
 
 	private PlayerState mockPlayerState(List<Instruction> asList) {
-		PlayerState p = mock(PlayerState.class);
+		var p = mock(PlayerState.class);
 		doReturn(new LinkedList<>(asList)).when(p).getRemainingInstructions();
 		doReturn(mock(Player.class)).when(p).getPlayer();
 		return p;

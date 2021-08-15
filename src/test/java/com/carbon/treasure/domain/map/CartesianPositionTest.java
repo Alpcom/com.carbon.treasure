@@ -70,7 +70,6 @@ public class CartesianPositionTest {
 		assertEquals(new CartesianPosition(2, 0), cartesianPosition.to(2, EAST));
 	}
 
-
 	@Test
 	void moveWithWestOrientation() {
 		var cartesianPosition = new CartesianPosition(0, 0);
@@ -81,6 +80,6 @@ public class CartesianPositionTest {
 	void moveNext() {
 		var cartesianPosition = new CartesianPosition(0, 0);
 		assertEquals(new CartesianPosition(1, 0), cartesianPosition.nextTo(EAST));
-	}	
-	
+	}
+
 }

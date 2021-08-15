@@ -32,7 +32,7 @@ public class GameMap {
 
 	private static final class PositionCellFilter implements Predicate<Cell> {
 
-		private Position p;
+		private final Position p;
 
 		public PositionCellFilter(Position p) {
 			this.p = p;
@@ -40,7 +40,7 @@ public class GameMap {
 
 		@Override
 		public boolean test(Cell t) {
-			return p.equals(t.getPosition());
+			return this.p.equals(t.getPosition());
 		}
 
 	}
@@ -52,7 +52,7 @@ public class GameMap {
 	}
 
 	public Set<Cell> getCells() {
-		return cases;
+		return this.cases;
 	}
 
 	public Cell getCellAt(int x, int y) {
@@ -60,7 +60,7 @@ public class GameMap {
 	}
 
 	public Optional<Cell> getCellAt(Position p) {
-		return cases.stream().filter(new PositionCellFilter(p)).findFirst();
+		return this.cases.stream().filter(new PositionCellFilter(p)).findFirst();
 	}
 
 }

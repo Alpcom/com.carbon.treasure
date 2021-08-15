@@ -73,34 +73,34 @@ public class PlayerState {
 	}
 
 	public List<Instruction> getRemainingInstructions() {
-		return remainingInstruction;
+		return this.remainingInstruction;
 	}
 
 	public Player getPlayer() {
-		return player;
+		return this.player;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(player);
+		return Objects.hash(this.player);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if ((obj == null) || (getClass() != obj.getClass())) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PlayerState other = (PlayerState) obj;
-		return Objects.equals(player, other.player);
+		}
+		var other = (PlayerState) obj;
+		return Objects.equals(this.player, other.player);
 	}
 
 	@Override
 	public String toString() {
-		return "PlayerState [position=" + position + ", orientation=" + orientation + ", remainingInstruction="
-				+ remainingInstruction + ", player=" + player + "]";
+		return "PlayerState [position=" + this.position + ", orientation=" + this.orientation
+				+ ", remainingInstruction=" + this.remainingInstruction + ", player=" + this.player + "]";
 	}
 
 	public void setOrientation(Orientation orientation) {
@@ -116,7 +116,7 @@ public class PlayerState {
 	}
 
 	public int getScorePoint() {
-		return score;
+		return this.score;
 	}
 
 }

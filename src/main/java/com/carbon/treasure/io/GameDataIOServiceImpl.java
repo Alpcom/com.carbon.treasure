@@ -59,10 +59,10 @@ public class GameDataIOServiceImpl implements GameDataDeserializationService, Ga
 	@Override
 	public GameData parse(InputStream inputStream) {
 		LOGGER.info(Messages.getMessage("GameDataSerializationServiceImpl.Logger0")); //$NON-NLS-1$
-		GameDataSerializationDelegate builder = new GameDataSerializationDelegate();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+		var builder = new GameDataSerializationDelegate();
+		var reader = new BufferedReader(new InputStreamReader(inputStream));
 		reader.lines().forEach(builder::readLine);
-		GameData result = builder.build(new CellFactoryImpl());
+		var result = builder.build(new CellFactoryImpl());
 		LOGGER.info(Messages.getMessage("GameDataSerializationServiceImpl.Logger1")); //$NON-NLS-1$
 		return result;
 	}
@@ -70,8 +70,8 @@ public class GameDataIOServiceImpl implements GameDataDeserializationService, Ga
 	@Override
 	public void serialized(GameData data, OutputStream outputStream) {
 		LOGGER.info(Messages.getMessage("GameDataSerializationServiceImpl.Logger2")); //$NON-NLS-1$
-		List<String> lines = toLines(data);
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+		var lines = toLines(data);
+		var writer = new BufferedWriter(new OutputStreamWriter(outputStream));
 		try {
 			writer.append(String.join(System.lineSeparator(), lines));
 			writer.flush();
@@ -83,24 +83,23 @@ public class GameDataIOServiceImpl implements GameDataDeserializationService, Ga
 	}
 
 	private List<String> toLines(GameData data) {
-		LinkedList<String> lines = new LinkedList<>();
-		lines.addAll(mapToLines(data.getMap()));
+		var lines = new LinkedList<String>(mapToLines(data.getMap()));
 		lines.add(Messages.getMessage("GameDataSerializationServiceImpl.OutputFormat0")); //$NON-NLS-1$
 		data.getAdventurers().stream().map(this::scoreToLine).forEach(lines::add);
 		return lines;
 	}
 
 	private List<String> mapToLines(GameMap map) {
-		int maxX = Integer.MIN_VALUE;
-		int maxY = Integer.MIN_VALUE;
-		LinkedList<Position> mountains = new LinkedList<>();
+		var maxX = Integer.MIN_VALUE;
+		var maxY = Integer.MIN_VALUE;
+		var mountains = new LinkedList<Position>();
 		Map<Position, Integer> tresors = new LinkedHashMap<>();
 		for (Cell c : map.getCells()) {
-			int x = c.getPosition().getX();
+			var x = c.getPosition().getX();
 			if (x > maxX) {
 				maxX = x;
 			}
-			int y = c.getPosition().getY();
+			var y = c.getPosition().getY();
 			if (y > maxY) {
 				maxY = y;
 			}
@@ -111,7 +110,7 @@ public class GameDataIOServiceImpl implements GameDataDeserializationService, Ga
 				tresors.put(c.getPosition(), c.getTreasureCount());
 			}
 		}
-		LinkedList<String> toDump = new LinkedList<>();
+		var toDump = new LinkedList<String>();
 		toDump.add(String.format(Messages.getMessage("GameDataSerializationServiceImpl.OutputFormat1"), maxX + 1, //$NON-NLS-1$
 				maxY + 1));
 		mountains.stream().map(this::formatMoutain).forEach(toDump::add);
@@ -131,7 +130,7 @@ public class GameDataIOServiceImpl implements GameDataDeserializationService, Ga
 	}
 
 	private String scoreToLine(PlayerState state) {
-		Position position = state.getPosition();
+		var position = state.getPosition();
 		return String.format(Messages.getMessage("GameDataSerializationServiceImpl.OutputFormat5"), //$NON-NLS-1$
 				state.getPlayer().getName(), position.getX(), position.getY(),
 				state.getOrientation().toString().charAt(0), state.getScorePoint());

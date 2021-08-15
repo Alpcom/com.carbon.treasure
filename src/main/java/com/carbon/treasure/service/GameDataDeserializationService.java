@@ -37,7 +37,7 @@ public interface GameDataDeserializationService {
 	/**
 	 * The method read the {@link InputStream} to produce the {@link GameData}. Be
 	 * carefull the {@link InputStream} will not be close.
-	 * 
+	 *
 	 * @param inputStream
 	 * @return the deserialized data
 	 */

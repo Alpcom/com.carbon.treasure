@@ -33,7 +33,7 @@ public class CellFactoryImpl implements CellFactory {
 	@Override
 	public Cell createTreasure(Position p, Integer integer) {
 		return new TreasureCell(p, integer);
-		
+
 	}
 
 	@Override

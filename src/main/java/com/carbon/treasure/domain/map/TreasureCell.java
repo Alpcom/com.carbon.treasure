@@ -35,7 +35,7 @@ public class TreasureCell extends PlainCell {
 	@Override
 	public boolean removeATreasure() {
 		if (canRemoveATreasure()) {
-			treasureCount--;
+			this.treasureCount--;
 			return true;
 		}
 		return false;
@@ -43,17 +43,17 @@ public class TreasureCell extends PlainCell {
 
 	@Override
 	public boolean canRemoveATreasure() {
-		return treasureCount > 0;
+		return this.treasureCount > 0;
 	}
 
 	@Override
 	public int getTreasureCount() {
-		return treasureCount;
+		return this.treasureCount;
 	}
 
 	@Override
 	public String toString() {
-		return "TreasureCell [treasureCount=" + treasureCount + ", getPosition()=" + getPosition() + "]";
+		return "TreasureCell [treasureCount=" + this.treasureCount + ", getPosition()=" + getPosition() + "]";
 	}
 
 	@Override

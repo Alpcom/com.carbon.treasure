@@ -42,7 +42,6 @@ import com.carbon.treasure.domain.Player;
 import com.carbon.treasure.domain.PlayerState;
 import com.carbon.treasure.domain.map.CartesianPosition;
 import com.carbon.treasure.domain.map.CellFactory;
-import com.carbon.treasure.domain.map.GameMap;
 import com.carbon.treasure.domain.map.RectangularArea;
 
 class GameDataSerializationDelegate {
@@ -70,18 +69,18 @@ class GameDataSerializationDelegate {
 	private final Map<Player, PlayerState> adventurers = new HashMap<>();
 
 	public GameData build(CellFactory cellFactory) {
-		GameMap map = mapBuilder.build(cellFactory);
-		return new GameData(map, new ArrayList<>(adventurers.values()));
+		var map = this.mapBuilder.build(cellFactory);
+		return new GameData(map, new ArrayList<>(this.adventurers.values()));
 
 	}
 
 	void readLine(String lineToRead) {
-		String strippedLine = lineToRead.strip();
+		var strippedLine = lineToRead.strip();
 		LOGGER.debug(Messages.getMessage("GameDataSerializationDelegate.Logger10"), lineToRead); //$NON-NLS-1$
 		if (strippedLine.startsWith(COMMENT_PREFIX) || strippedLine.isEmpty()) {
 			LOGGER.debug(Messages.getMessage("GameDataSerializationDelegate.Logger11")); //$NON-NLS-1$
-			return; // comment line or empty line : nothing to build
-		} else if (strippedLine.startsWith(MAP_KEY)) {
+		}
+		if (strippedLine.startsWith(MAP_KEY)) {
 			LOGGER.debug(Messages.getMessage("GameDataSerializationDelegate.Logger12")); //$NON-NLS-1$
 			parseMap(strippedLine);
 		} else if (strippedLine.startsWith(MOUNTAIN_KEY)) {
@@ -94,24 +93,25 @@ class GameDataSerializationDelegate {
 			LOGGER.debug(Messages.getMessage("GameDataSerializationDelegate.Logger15")); //$NON-NLS-1$
 			parseAdventurer(strippedLine);
 		} else {
-			throw new ParsingException(String.format(Messages.getMessage("GameDataSerializationDelegate.Logger29"), strippedLine)); //$NON-NLS-1$
+			throw new ParsingException(
+					String.format(Messages.getMessage("GameDataSerializationDelegate.Logger29"), strippedLine)); //$NON-NLS-1$
 		}
 
 	}
 
 	private void parseAdventurer(String strippedLine) {
-		String[] split = strippedLine.split(SPLIT_CHAR);
+		var split = strippedLine.split(SPLIT_CHAR);
 		if (split.length != 6) {
 			throw createParseAdventurerException(strippedLine, null);
 		}
-		String adventurerName = split[1].trim();
-		int x = 0;
+		var adventurerName = split[1].trim();
+		var x = 0;
 		try {
 			x = Integer.parseInt(split[2].trim());
 		} catch (NumberFormatException e) {
 			throw createParseAdventurerException(strippedLine, e);
 		}
-		int y = 0;
+		var y = 0;
 		try {
 			y = Integer.parseInt(split[3].trim());
 		} catch (NumberFormatException e) {
@@ -135,7 +135,7 @@ class GameDataSerializationDelegate {
 			throw createParseAdventurerException(strippedLine, null);
 		}
 		List<Instruction> instructions = Collections.emptyList();
-		String trimmedInstructions = split[5].trim();
+		var trimmedInstructions = split[5].trim();
 		try {
 			instructions = trimmedInstructions.chars().mapToObj(i -> (char) i).map(this::toInstruction)
 					.collect(Collectors.toCollection(LinkedList::new));
@@ -144,10 +144,10 @@ class GameDataSerializationDelegate {
 			throw new ParsingException(String.format(Messages.getMessage("GameDataSerializationDelegate.Logger0"), //$NON-NLS-1$
 					strippedLine, System.lineSeparator(), e.getMessage()), e);
 		}
-		Player adventurer = new Player(adventurerName);
-		PlayerState adventurerState = new PlayerState(adventurer, new CartesianPosition(x, y), orientation,
+		var adventurer = new Player(adventurerName);
+		var adventurerState = new PlayerState(adventurer, new CartesianPosition(x, y), orientation,
 				instructions);
-		if (null != adventurers.put(adventurer, adventurerState)) {
+		if (null != this.adventurers.put(adventurer, adventurerState)) {
 			throw new ParsingException(Messages.getMessage("GameDataSerializationDelegate.Logger1")); //$NON-NLS-1$
 		}
 		LOGGER.debug(Messages.getMessage("GameDataSerializationDelegate.Logger18"), // //$NON-NLS-1$
@@ -176,29 +176,29 @@ class GameDataSerializationDelegate {
 	}
 
 	private void parseTreasure(String strippedLine) {
-		String[] split = strippedLine.split(SPLIT_CHAR);
+		var split = strippedLine.split(SPLIT_CHAR);
 		if (split.length != 4) {
 			throw createParseTreasureException(strippedLine, null);
 		}
-		int x = 0;
+		var x = 0;
 		try {
 			x = Integer.parseInt(split[1].trim());
 		} catch (NumberFormatException e) {
 			throw createParseTreasureException(strippedLine, e);
 		}
-		int y = 0;
+		var y = 0;
 		try {
 			y = Integer.parseInt(split[2].trim());
 		} catch (NumberFormatException e) {
 			throw createParseTreasureException(strippedLine, e);
 		}
-		int treasureCount = 0;
+		var treasureCount = 0;
 		try {
 			treasureCount = Integer.parseInt(split[3].trim());
 		} catch (NumberFormatException e) {
 			throw createParseTreasureException(strippedLine, e);
 		}
-		if (mapBuilder.addTreasure(new CartesianPosition(x, y), treasureCount)) {
+		if (this.mapBuilder.addTreasure(new CartesianPosition(x, y), treasureCount)) {
 			throw new ParsingException(Messages.getMessage("GameDataSerializationDelegate.Logger20")); //$NON-NLS-1$
 		}
 		LOGGER.debug(Messages.getMessage("GameDataSerializationDelegate.Logger21"), // //$NON-NLS-1$
@@ -207,64 +207,67 @@ class GameDataSerializationDelegate {
 	}
 
 	private ParsingException createParseTreasureException(String strippedLine, Exception object) {
-		return new ParsingException(String.format(Messages.getMessage("GameDataSerializationDelegate.Logger22"), strippedLine), //$NON-NLS-1$
+		return new ParsingException(
+				String.format(Messages.getMessage("GameDataSerializationDelegate.Logger22"), strippedLine), //$NON-NLS-1$
 				object);
 	}
 
 	private void parseMountain(String strippedLine) {
-		String[] split = strippedLine.split(SPLIT_CHAR);
+		var split = strippedLine.split(SPLIT_CHAR);
 		if (split.length != 3) {
 			throw createParseMountainException(strippedLine, null);
 		}
-		int x = 0;
+		var x = 0;
 		try {
 			x = Integer.parseInt(split[1].trim());
 		} catch (NumberFormatException e) {
 			throw createParseMountainException(strippedLine, e);
 		}
-		int y = 0;
+		var y = 0;
 		try {
 			y = Integer.parseInt(split[2].trim());
 		} catch (NumberFormatException e) {
 			throw createParseMountainException(strippedLine, e);
 		}
-		if (!mapBuilder.addMountains(new CartesianPosition(x, y))) {
+		if (!this.mapBuilder.addMountains(new CartesianPosition(x, y))) {
 			throw new ParsingException(Messages.getMessage("GameDataSerializationDelegate.Logger23")); //$NON-NLS-1$
 		}
 		LOGGER.debug(Messages.getMessage("GameDataSerializationDelegate.Logger24"), x, y); //$NON-NLS-1$
 	}
 
 	private ParsingException createParseMountainException(String strippedLine, Exception object) {
-		return new ParsingException(String.format(Messages.getMessage("GameDataSerializationDelegate.Logger25"), strippedLine), //$NON-NLS-1$
+		return new ParsingException(
+				String.format(Messages.getMessage("GameDataSerializationDelegate.Logger25"), strippedLine), //$NON-NLS-1$
 				object);
 	}
 
 	private void parseMap(String strippedLine) {
-		if (mapBuilder.containsMap()) {
+		if (this.mapBuilder.containsMap()) {
 			throw new ParsingException(Messages.getMessage("GameDataSerializationDelegate.Logger26")); //$NON-NLS-1$
 		}
-		String[] split = strippedLine.split(SPLIT_CHAR);
+		var split = strippedLine.split(SPLIT_CHAR);
 		if (split.length != 3) {
 			throw createParseMapException(strippedLine, null);
 		}
-		int width = 0;
+		var width = 0;
 		try {
 			width = Integer.parseInt(split[1].trim());
 		} catch (NumberFormatException e) {
 			throw createParseMapException(strippedLine, e);
 		}
-		int height = 0;
+		var height = 0;
 		try {
 			height = Integer.parseInt(split[2].trim());
 		} catch (NumberFormatException e) {
 			throw createParseMapException(strippedLine, e);
 		}
-		mapBuilder.setArea(new RectangularArea(0, 0, width, height));
+		this.mapBuilder.setArea(new RectangularArea(0, 0, width, height));
 		LOGGER.debug(Messages.getMessage("GameDataSerializationDelegate.Logger27"), width, height); //$NON-NLS-1$
 	}
 
 	private ParsingException createParseMapException(String strippedLine, Exception object) {
-		return new ParsingException(String.format(Messages.getMessage("GameDataSerializationDelegate.Logger28"), strippedLine), //$NON-NLS-1$
+		return new ParsingException(
+				String.format(Messages.getMessage("GameDataSerializationDelegate.Logger28"), strippedLine), //$NON-NLS-1$
 				object);
 	}
 }

@@ -24,7 +24,6 @@
 package com.carbon.treasure;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Objects;
 import java.util.PropertyResourceBundle;
 
@@ -39,7 +38,7 @@ public class Messages {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param key the key to used to retrieve the localized msg
 	 * @return localized format string to use as msg
 	 */
@@ -51,7 +50,7 @@ public class Messages {
 	}
 
 	private static void init() {
-		try (InputStream resourceAsStream = Messages.class.getResourceAsStream("messages.properties");) {
+		try (var resourceAsStream = Messages.class.getResourceAsStream("messages.properties");) {
 			Objects.requireNonNull(resourceAsStream);
 			bundle = new PropertyResourceBundle(resourceAsStream);
 		} catch (IOException e) {
