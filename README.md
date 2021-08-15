@@ -24,12 +24,12 @@ mvn clean install -Pnative-image
 running the jar file
 
 ```bash
-java -jar ./target/treasure-0.0.1-SNAPSHOT-jar-with-dependencies.jar -f=src/test/resources/com/carbon/treasure/integrationTest/integrationTestResource
+java -jar ./target/treasure-0.0.1-SNAPSHOT-jar-with-dependencies.jar -i=src/test/resources/com/carbon/treasure/integrationTest/integrationTestResource
 ```
 running the executable file
 
 ```bash
-./target/treasure -f=src/test/resources/com/carbon/treasure/integrationTest/integrationTestResource
+./target/treasure -i=src/test/resources/com/carbon/treasure/integrationTest/integrationTestResource
 ```
 
 more help is available using :
@@ -42,3 +42,7 @@ or
 ```bash
 ./target/treasure -h
 ```
+
+## Specification choices :
+Few thing in specification have been precised when hitting a player the player don't skip its instruction.
+if a player1 can't move because blocked by a player2 that can't move any more the player1 consumed all it instruction and will no more move. 

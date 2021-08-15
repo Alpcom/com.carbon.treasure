@@ -23,34 +23,40 @@
  */
 package com.carbon.treasure;
 
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import com.oracle.svm.core.annotate.Substitute;
+import com.oracle.svm.core.annotate.TargetClass;
+
 /**
- * Basic generated class that handle internationalization
+ * class use to swap get msg implementation on native image
+ * 
+ * @author aleprevost
+ *
  */
-public class Messages {
-	private static final String BUNDLE_NAME = "com.carbon.treasure.messages"; //$NON-NLS-1$
+@TargetClass(Messages.class)
+public final class MessagesSubstitutionForNative {
 
-	private static final ResourceBundle RESOURCE_BUNDLE = loadBundle();
-
-	private static ResourceBundle loadBundle() {
-		return ResourceBundle.getBundle(Messages.BUNDLE_NAME);
-	}
-
-	private Messages() {
+	/**
+	 * substitute method
+	 * 
+	 * @see Messages#getMessage(String)
+	 * @param key
+	 * @return translate msg
+	 */
+	@Substitute
+	public static String getMessage(String key) {
+		return MessagesForNative.getMessage(key);
 	}
 
 	/**
+	 * substitution to avoid bundleLoading
 	 * 
-	 * @param key the key to used to retrieve the localized msg
-	 * @return localized format string to use as msg
+	 * @return null
 	 */
-	public static String getMessage(String key) {
-		try {
-			return Messages.RESOURCE_BUNDLE.getString(key);
-		} catch (MissingResourceException e) {
-			return '!' + key + '!';
-		}
+	@Substitute
+	public static ResourceBundle loadBundle() {
+		return null;
 	}
+
 }

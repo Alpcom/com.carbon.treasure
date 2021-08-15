@@ -23,34 +23,44 @@
  */
 package com.carbon.treasure;
 
+import java.io.IOException;
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.util.Objects;
+import java.util.PropertyResourceBundle;
 
 /**
- * Basic generated class that handle internationalization
+ * class use to swap get msg implementation on native image
+ * 
+ * @author aleprevost
+ *
  */
-public class Messages {
-	private static final String BUNDLE_NAME = "com.carbon.treasure.messages"; //$NON-NLS-1$
+class MessagesForNative {
 
-	private static final ResourceBundle RESOURCE_BUNDLE = loadBundle();
-
-	private static ResourceBundle loadBundle() {
-		return ResourceBundle.getBundle(Messages.BUNDLE_NAME);
-	}
-
-	private Messages() {
-	}
+	private static PropertyResourceBundle bundle;
 
 	/**
+	 * substitute method
 	 * 
-	 * @param key the key to used to retrieve the localized msg
-	 * @return localized format string to use as msg
+	 * @see Messages#getMessage(String)
+	 * @param key
+	 * @return translate msg
 	 */
-	public static String getMessage(String key) {
+
+	static String getMessage(String key) {
+		if (bundle == null) {
+			try (var resourceAsStream = Messages.class.getResourceAsStream("messages.properties");) {
+				Objects.requireNonNull(resourceAsStream);
+				bundle = new PropertyResourceBundle(resourceAsStream);
+			} catch (IOException e) {
+				throw new IllegalStateException(e);
+			}
+		}
 		try {
-			return Messages.RESOURCE_BUNDLE.getString(key);
+			return bundle.getString(key);
 		} catch (MissingResourceException e) {
 			return '!' + key + '!';
 		}
+
 	}
+
 }

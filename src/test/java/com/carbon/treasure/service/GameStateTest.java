@@ -26,6 +26,7 @@ package com.carbon.treasure.service;
 import static com.carbon.treasure.domain.Instruction.LEFT;
 import static com.carbon.treasure.domain.Instruction.MOVE;
 import static com.carbon.treasure.domain.Instruction.RIGHT;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -60,6 +61,16 @@ class GameStateTest {
 		}
 
 		assertIterableEquals(Arrays.asList(LEFT, MOVE, RIGHT, LEFT, RIGHT, RIGHT), playedInstruction);
+	}
+
+	@Test
+	void testCustomColdRetrieve() {
+		var data = mock(GameData.class);
+		List<PlayerState> states = Arrays.asList(mockPlayerState(Arrays.asList(LEFT)));
+		doReturn(states).when(data).getAdventurers();
+		var state = new GameState(data);
+		var nextPlayer = state.nextPlayer();
+		assertEquals(LEFT, nextPlayer.getNextInstruction());
 	}
 
 	private PlayerState mockPlayerState(List<Instruction> asList) {

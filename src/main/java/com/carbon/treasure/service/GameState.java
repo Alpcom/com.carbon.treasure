@@ -166,8 +166,8 @@ class GameState {
 			case MOVE:
 				var targetPosition = currentState.getPosition().nextTo(currentState.getOrientation());
 				var targetedCellOpt = this.map.getCellAt(targetPosition);
-				var targetedCell = targetedCellOpt.get();
-				if (!targetedCellOpt.isEmpty() && !targetedCell.isMountain()) {
+				if (targetedCellOpt.isPresent() && !targetedCellOpt.get().isMountain()) {
+					var targetedCell = targetedCellOpt.get();
 					if (isCellAvailable(targetPosition)) {
 						currentState.setPosition(targetPosition);
 						LOGGER.debug("{} move to {},{}.", currentState.getPlayer().getName(), targetPosition.getX(),
@@ -185,8 +185,9 @@ class GameState {
 					} else {
 						currentPlayer.consomeAllInstruction();
 					}
-				} else {
-					currentPlayer.consomeAllInstruction();
+				} else {// on a mountain or a border on the player loose its turn the instruction is
+						// consumed
+					currentPlayer.consomeNextInstruction();
 				}
 			}
 		}

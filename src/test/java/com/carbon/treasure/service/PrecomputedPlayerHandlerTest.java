@@ -102,4 +102,15 @@ class PrecomputedPlayerHandlerTest {
 		assertThrows(NoSuchElementException.class, objTotest::consomeNextInstruction);
 	}
 
+	@Test
+	void testFailAllInstructionConsumption() {
+		var player = mock(Player.class);
+		var state = mock(PlayerState.class);
+		doReturn(player).when(state).getPlayer();
+		List<Instruction> asList = new LinkedList<>(Arrays.asList());
+		doReturn(asList).when(state).getRemainingInstructions();
+		var objTotest = new PrecomputedPlayerHandler(state);
+		assertThrows(NoSuchElementException.class, objTotest::consomeAllInstruction);
+	}
+
 }

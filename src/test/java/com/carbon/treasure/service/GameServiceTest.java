@@ -131,4 +131,51 @@ class GameServiceTest {
 
 	}
 
+	@Test
+	void test_3() {
+
+		var service = new GameService();
+		CellFactory cellFactory = new CellFactoryImpl();
+
+		List<Cell> cells = Arrays.asList(//
+				cellFactory.createPlain(new Position(0, 0)), //
+				cellFactory.createMountain(new Position(0, 1)) //
+		);
+
+		var indiana = new PlayerState(new Player("Indiana"), new Position(0, 0), Orientation.SOUTH,
+				new ArrayList<>(Arrays.asList(MOVE, MOVE)));//
+		List<PlayerState> players = Arrays.asList(indiana);
+		var data = new GameData(new GameMap(new HashSet<>(cells)), players);
+
+		var toCheck = service.play(data);
+
+		var indiana_out = toCheck.getAdventurers().get(0);
+		assertEquals(Orientation.SOUTH, indiana_out.getOrientation());
+		assertEquals(new Position(0, 0), indiana_out.getPosition());
+
+	}
+	
+	@Test
+	void test_4() {
+
+		var service = new GameService();
+		CellFactory cellFactory = new CellFactoryImpl();
+
+		List<Cell> cells = Arrays.asList(//
+				cellFactory.createPlain(new Position(0, 0)) //
+		);
+
+		var indiana = new PlayerState(new Player("Indiana"), new Position(0, 0), Orientation.SOUTH,
+				new ArrayList<>(Arrays.asList(MOVE, MOVE)));//
+		List<PlayerState> players = Arrays.asList(indiana);
+		var data = new GameData(new GameMap(new HashSet<>(cells)), players);
+
+		var toCheck = service.play(data);
+
+		var indiana_out = toCheck.getAdventurers().get(0);
+		assertEquals(Orientation.SOUTH, indiana_out.getOrientation());
+		assertEquals(new Position(0, 0), indiana_out.getPosition());
+
+	}
+
 }

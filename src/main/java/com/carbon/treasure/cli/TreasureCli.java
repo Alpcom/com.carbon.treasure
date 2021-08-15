@@ -98,10 +98,9 @@ public class TreasureCli implements Callable<Integer> {
 		System.exit(exitCode);
 	}
 
-	private int handleExecutionException(Exception ex, CommandLine commandLine, ParseResult parseResult)
-			throws Exception {
+	int handleExecutionException(Exception ex, CommandLine commandLine, ParseResult parseResult) throws Exception {
 		LOGGER.error("An Unknown error occurs");
 		LOGGER.debug("Cause :", ex);
-		return 1;
+		return 4;
 	}
 }
