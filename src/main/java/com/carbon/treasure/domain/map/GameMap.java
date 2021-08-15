@@ -24,11 +24,9 @@
 package com.carbon.treasure.domain.map;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
-
-import com.carbon.treasure.domain.CartesianPosition;
-import com.carbon.treasure.domain.Position;
 
 public class GameMap {
 
@@ -58,11 +56,11 @@ public class GameMap {
 	}
 
 	public Cell getCellAt(int x, int y) {
-		return getCellAt(new CartesianPosition(x, y));
+		return getCellAt(new CartesianPosition(x, y)).orElseThrow();
 	}
 
-	public Cell getCellAt(Position p) {
-		return cases.stream().filter(new PositionCellFilter(p)).findFirst().orElseThrow();
+	public Optional<Cell> getCellAt(Position p) {
+		return cases.stream().filter(new PositionCellFilter(p)).findFirst();
 	}
 
 }

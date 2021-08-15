@@ -23,63 +23,29 @@
  */
 package com.carbon.treasure.domain;
 
+import java.util.List;
+
+import com.carbon.treasure.domain.map.GameMap;
+
 /**
- * implementation of a rectangular area
+ * the model use as input by software
  */
-public class RectangularArea implements Area {
+public class GameData {
 
-	private final int x;
-	private final int y;
-	private final int width;
-	private final int height;
+	private final GameMap map;
+	private List<PlayerState> states;
 
-	/**
-	 * @param x      the x-coordinate of the lower left corner
-	 * @param y      the y-coordinate of the lower left corner
-	 * @param width  the width of the area
-	 * @param height the height of the area
-	 */
-	public RectangularArea(int x, int y, int width, int height) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+	public GameData(GameMap map, List<PlayerState> states) {
+		this.map = map;
+		this.states = states;
 	}
 
-	/**
-	 * @return x coordinate
-	 */
-	public int getX() {
-		return this.x;
+	public GameMap getMap() {
+		return map;
 	}
 
-	/**
-	 * @return y coordinate
-	 */
-	public int getY() {
-		return this.y;
-	}
-
-	/**
-	 * @return rectangle width
-	 */
-	public int getWidth() {
-		return this.width;
-	}
-
-	/**
-	 * @return rectangle width
-	 */
-	public int getHeight() {
-		return this.height;
-	}
-
-	@Override
-	public boolean contains(Position position) {
-		var px = position.getX();
-		var py = position.getY();
-		return this.x <= px && px < this.x + this.width //
-				&& this.y <= py && py < this.y + this.height;
+	public List<PlayerState> getAdventurers() {
+		return states;
 	}
 
 }

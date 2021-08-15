@@ -21,29 +21,65 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.carbon.treasure.domain;
-
-import com.carbon.treasure.domain.map.GameMap;
+package com.carbon.treasure.domain.map;
 
 /**
- * the model use as input by software
+ * implementation of a rectangular area
  */
-public class InputData {
+public class RectangularArea implements Area {
 
-	private final GameMap map;
-	private final PlayerStates adventurers;
+	private final int x;
+	private final int y;
+	private final int width;
+	private final int height;
 
-	public InputData(GameMap map, PlayerStates adventurers) {
-		this.map = map;
-		this.adventurers = adventurers;
+	/**
+	 * @param x      the x-coordinate of the lower left corner
+	 * @param y      the y-coordinate of the lower left corner
+	 * @param width  the width of the area
+	 * @param height the height of the area
+	 */
+	public RectangularArea(int x, int y, int width, int height) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
 	}
 
-	public GameMap getMap() {
-		return map;
+	/**
+	 * @return x coordinate
+	 */
+	public int getX() {
+		return this.x;
 	}
 
-	public PlayerStates getAdventurers() {
-		return adventurers;
+	/**
+	 * @return y coordinate
+	 */
+	public int getY() {
+		return this.y;
+	}
+
+	/**
+	 * @return rectangle width
+	 */
+	public int getWidth() {
+		return this.width;
+	}
+
+	/**
+	 * @return rectangle width
+	 */
+	public int getHeight() {
+		return this.height;
+	}
+
+	@Override
+	public boolean contains(Position position) {
+		var px = position.getX();
+		var py = position.getY();
+		return this.x <= px && px < this.x + this.width //
+				&& this.y <= py && py < this.y + this.height;
 	}
 
 }

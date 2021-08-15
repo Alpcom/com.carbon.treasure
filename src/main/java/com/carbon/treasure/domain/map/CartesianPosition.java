@@ -21,9 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.carbon.treasure.domain;
+package com.carbon.treasure.domain.map;
 
 import java.util.Objects;
+
+import com.carbon.treasure.domain.Orientation;
 
 /**
  * A {@link Position} implementation that is based on cartesian construction
@@ -58,9 +60,9 @@ public class CartesianPosition implements Position {
 			return new CartesianPosition(this.x + d, this.y);
 		}
 		if (orientation == Orientation.NORTH) {
-			return new CartesianPosition(this.x, this.y + d);
-		} else if (orientation == Orientation.SOUTH) {
 			return new CartesianPosition(this.x, this.y - d);
+		} else if (orientation == Orientation.SOUTH) {
+			return new CartesianPosition(this.x, this.y + d);
 		} else if (orientation == Orientation.WEST) {
 			return new CartesianPosition(this.x - d, this.y);
 		} else {

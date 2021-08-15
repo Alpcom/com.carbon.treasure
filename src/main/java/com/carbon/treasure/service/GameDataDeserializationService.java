@@ -21,30 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.carbon.treasure.domain;
+package com.carbon.treasure.service;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.io.InputStream;
 
-import org.junit.jupiter.api.Test;
+import com.carbon.treasure.domain.GameData;
 
-import com.google.common.testing.EqualsTester;
+/**
+ * A functional interface that describe the transformation of an input stream to
+ * the data
+ */
+@FunctionalInterface
+public interface GameDataDeserializationService {
 
-public class CartesianPositionTest {
-
-	@Test
-	void testEquals() {
-		new EqualsTester()//
-				.addEqualityGroup(new CartesianPosition(0, 0))//
-				.addEqualityGroup(new CartesianPosition(0, 1))//o
-				.addEqualityGroup(new CartesianPosition(1, 0))//
-				.addEqualityGroup(new CartesianPosition(1, 1))//
-				.testEquals();
-	}
-
-	@Test
-	void moveWithNullOrientation() {
-		var cartesianPosition = new CartesianPosition(0, 0);
-		assertThrows(IllegalArgumentException.class, () -> cartesianPosition.to(1, null));
-	}
-
+	/**
+	 * The method read the {@link InputStream} to produce the {@link GameData}. Be
+	 * carefull the {@link InputStream} will not be close.
+	 * 
+	 * @param inputStream
+	 * @return the deserialized data
+	 */
+	GameData parse(InputStream inputStream);
 }

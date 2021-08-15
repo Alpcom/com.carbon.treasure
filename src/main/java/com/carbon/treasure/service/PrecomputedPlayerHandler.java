@@ -23,8 +23,7 @@
  */
 package com.carbon.treasure.service;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.NoSuchElementException;
 
 import com.carbon.treasure.domain.Instruction;
 import com.carbon.treasure.domain.Player;
@@ -32,14 +31,10 @@ import com.carbon.treasure.domain.PlayerState;
 
 public class PrecomputedPlayerHandler implements PlayerHandler {
 
-	private final Player adventurer;
 	private final PlayerState adventurerState;
-	private final List<Instruction> instructions;
 
-	public PrecomputedPlayerHandler(Player adventurer, PlayerState adventurerState, List<Instruction> instructions) {
-		this.adventurer = adventurer;
-		this.adventurerState = adventurerState;
-		this.instructions = instructions;
+	public PrecomputedPlayerHandler(PlayerState adventurerInitialState) {
+		this.adventurerState = adventurerInitialState;
 	}
 
 	@Override
@@ -48,12 +43,45 @@ public class PrecomputedPlayerHandler implements PlayerHandler {
 	}
 
 	@Override
-	public List<Instruction> getInstructions() {
-		return Collections.unmodifiableList(instructions);
-	}
-
 	public Player getAdventurer() {
-		return adventurer;
+		return adventurerState.getPlayer();
 	}
 
+	@Override
+	public Instruction getNextInstruction() {
+		if (haveRemainingInstruction()) {
+			return adventurerState.getRemainingInstructions().get(0);
+		} else {
+			throw new NoSuchElementException();
+		}
+	}
+
+	@Override
+	public boolean haveRemainingInstruction() {
+		return !adventurerState.getRemainingInstructions().isEmpty();
+	}
+
+	@Override
+	public void consomeNextInstruction() {
+		if (haveRemainingInstruction()) {
+			adventurerState.getRemainingInstructions().remove(0);
+		} else {
+			throw new NoSuchElementException();
+		}
+	}
+
+	@Override
+	public void treasureFound() {
+		adventurerState.addScorePoint(1);
+	}
+
+	@Override
+	public void consomeAllInstruction() {
+		if (haveRemainingInstruction()) {
+			adventurerState.getRemainingInstructions().clear();
+		} else {
+			throw new NoSuchElementException();
+		}
+
+	}
 }

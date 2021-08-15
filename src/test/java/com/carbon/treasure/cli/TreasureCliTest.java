@@ -21,17 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.carbon.treasure.unittest.copy;
+package com.carbon.treasure.cli;
 
-import java.io.InputStream;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class UnitTestResourceHelper {
-    private UnitTestResourceHelper() {
-	// hide default constructor
-    }
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Paths;
 
-    public static InputStream getInputStream(String fileNameToParse) {
-	return UnitTestResourceHelper.class.getResourceAsStream(fileNameToParse);
-    }
+import org.hamcrest.text.IsEqualCompressingWhiteSpace;
+import org.junit.jupiter.api.Test;
+
+import com.carbon.treasure.integrationTest.IntegrationTestResourceHelper;
+
+import picocli.CommandLine;
+
+class TreasureCliTest {
+
+	@Test
+	void test1() throws IOException {
+		var exitCode = new CommandLine(new TreasureCli()).execute(
+				"-i=./src/test/resources/com/carbon/treasure/integrationTest/it1", //
+				"-o=./target/output/treasurecli1");
+		assertEquals(0, exitCode);
+		String golden = new String(IntegrationTestResourceHelper.getInputStream("it1_golden_output").readAllBytes());
+		try (FileInputStream fileInputStream = new FileInputStream(
+				Paths.get("./target/output/treasurecli1").toFile())) {
+			String output = new String(fileInputStream.readAllBytes());
+			assertTrue(IsEqualCompressingWhiteSpace.equalToCompressingWhiteSpace(golden).matches(output));
+		}
+
+	}
 
 }

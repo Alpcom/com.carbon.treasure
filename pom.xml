@@ -51,7 +51,6 @@
 	<properties>
 		<!-- unmanaged dependencies version -->
 		<slf4j.version>1.7.31</slf4j.version>
-		<projectreactor.version>3.4.7</projectreactor.version>
 		<picocli.version>4.6.1</picocli.version>
 		<!-- unmanaged test dependencies version -->
 		<guava.version>30.1.1-jre</guava.version>
@@ -62,15 +61,11 @@
 		<maven.compiler.source>11</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<mainClass>com.carbon.treasure.cli.MowerCli</mainClass>
+		<mainClass>com.carbon.treasure.cli.TreasureCli</mainClass>
 
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>io.projectreactor</groupId>
-			<artifactId>reactor-core</artifactId>
-			<version>${projectreactor.version}</version>
-		</dependency>
+
 		<!-- slf4j and logger dependencies -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -101,6 +96,14 @@
 			<artifactId>junit-jupiter-params</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest -->
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest</artifactId>
+			<version>2.2</version>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
@@ -223,6 +226,7 @@
 							<mainClass>${mainClass}</mainClass>
 							<buildArgs>${buildArgs}</buildArgs>
 							<buildArgs>-J&#45;&#45;add-exports=java.base/jdk.internal.module=ALL-UNNAMED</buildArgs>
+							<buildArgs>-H:IncludeResources=.*properties</buildArgs>
 							<!-- <buildArgs>-H:+ReportUnsupportedElementsAtRuntime &#45;&#45;allow-incomplete-classpath</buildArgs> -->
 						</configuration>
 						<executions>

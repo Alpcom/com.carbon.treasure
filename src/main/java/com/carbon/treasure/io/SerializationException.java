@@ -21,25 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.carbon.treasure.parser;
+package com.carbon.treasure.io;
 
-import java.io.InputStream;
+import java.io.IOException;
 
-import com.carbon.treasure.domain.InputData;
+public class SerializationException extends RuntimeException {
 
-/**
- * A functional interface that describe the transformation of an input stream to
- * the data that will be handle by mowers
- */
-@FunctionalInterface
-public interface InputDataSerialisationService {
+	private static final long serialVersionUID = 4980748236535561034L;
 
-    /**
-     * The method read the {@link InputStream} to produce the {@link InputData}. Be
-     * carefull the {@link InputStream} will not be close.
-     * 
-     * @param inputStream
-     * @return the deserialized data
-     */
-    InputData parse(InputStream inputStream);
+	public SerializationException(IOException e) {
+		super(e);
+	}
+
 }

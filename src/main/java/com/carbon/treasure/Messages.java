@@ -23,31 +23,39 @@
  */
 package com.carbon.treasure;
 
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
+import java.util.PropertyResourceBundle;
 
 /**
  * Basic generated class that handle internationnnalisation
  */
 public class Messages {
-    private static final String BUNDLE_NAME = "com.carbon.treasure.messages"; //$NON-NLS-1$
 
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(Messages.BUNDLE_NAME);
+	private static PropertyResourceBundle bundle;
 
-    private Messages() {
-    }
-
-    /**
-     * 
-     * @param key
-     *            the key to used to retrieve the localized msg
-     * @return localized format string to use as msg
-     */
-    public static String getMessage(String key) {
-	try {
-	    return Messages.RESOURCE_BUNDLE.getString(key);
-	} catch (MissingResourceException e) {
-	    return '!' + key + '!';
+	private Messages() {
 	}
-    }
+
+	/**
+	 * 
+	 * @param key the key to used to retrieve the localized msg
+	 * @return localized format string to use as msg
+	 */
+	public static String getMessage(String key) {
+		if (bundle == null) {
+			init();
+		}
+		return bundle.getString(key);
+	}
+
+	private static void init() {
+		try (InputStream resourceAsStream = Messages.class.getResourceAsStream("messages.properties");) {
+			Objects.requireNonNull(resourceAsStream);
+			bundle = new PropertyResourceBundle(resourceAsStream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

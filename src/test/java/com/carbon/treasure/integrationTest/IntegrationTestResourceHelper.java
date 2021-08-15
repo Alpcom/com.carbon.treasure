@@ -26,12 +26,12 @@ package com.carbon.treasure.integrationTest;
 import java.io.InputStream;
 
 public class IntegrationTestResourceHelper {
-    private IntegrationTestResourceHelper() {
-	// hide default constructor
-    }
+	private IntegrationTestResourceHelper() {
+		// hide default constructor
+	}
 
-    public static InputStream getInputStream(String fileNameToParse) {
-	return IntegrationTestResourceHelper.class.getResourceAsStream(fileNameToParse);
-    }
+	public static InputStream getInputStream(String fileNameToParse) {
+		return IntegrationTestResourceHelper.class.getResourceAsStream(fileNameToParse);
+	}
 
 }

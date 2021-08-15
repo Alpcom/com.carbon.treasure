@@ -23,41 +23,73 @@
  */
 package com.carbon.treasure.cli;
 
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.concurrent.Callable;
 
-import com.carbon.treasure.parser.InputDataBasicFileDeserialisationService;
-import com.carbon.treasure.parser.InputDataDeserialisationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.carbon.treasure.domain.GameData;
+import com.carbon.treasure.io.GameDataIOServiceImpl;
+import com.carbon.treasure.service.GameService;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
+import picocli.CommandLine.ParseResult;
 
-@Command(name = "mower", version = "MowItNow 1.0", mixinStandardHelpOptions = true)
-public class TreasureCli implements Runnable {
+@Command(name = "treasure", version = "1.0", mixinStandardHelpOptions = true)
+public class TreasureCli implements Callable<Integer> {
 
-	@Option(names = { "-f", "--file-path" }, description = "path to file to read")
-	Path filePath;
+	private static final Logger LOGGER = LoggerFactory.getLogger(TreasureCli.class);
+
+	@Option(names = { "-i", "--input-file-path" }, description = "path to file to read", required = true)
+	Path inputFilePath;
+	@Option(names = { "-o", "--output-file-path" }, description = "path to file to write")
+	Path outputFilePath;
 
 	@Override
-	public void run() {
-		try (InputStream inputStream = new FileInputStream(this.filePath.toFile())) {
-			InputDataDeserialisationService parser = new InputDataBasicFileDeserialisationService();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public Integer call() throws IOException {
+		if (outputFilePath == null) {
+			outputFilePath = Paths.get(".", "output.treasure");
 		}
-
+		GameDataIOServiceImpl io = new GameDataIOServiceImpl();
+		GameData data;
+		try (InputStream inputStream = new FileInputStream(this.inputFilePath.toFile())) {
+			data = io.parse(inputStream);
+		}
+		GameService service = new GameService();
+		GameData play = service.play(data);
+		File outputFile = this.outputFilePath.toFile();
+		if (!outputFile.exists()) {
+			outputFile.getParentFile().mkdirs();
+			outputFile.createNewFile();
+		}
+		try (OutputStream outputStream = new FileOutputStream(outputFile)) {
+			io.serialized(play, outputStream);
+		}
+		return 0;
 	}
 
 	public static void main(String[] args) {
-		var exitCode = new CommandLine(new TreasureCli()).execute(args);
+		TreasureCli command = new TreasureCli();
+		CommandLine commandLine = new CommandLine(command);
+		commandLine.setExecutionExceptionHandler(command::handleExecutionException);
+		var exitCode = commandLine.execute(args);
 		System.exit(exitCode);
+	}
+
+	public int handleExecutionException(Exception ex, CommandLine commandLine, ParseResult parseResult)
+			throws Exception {
+		LOGGER.error("An Unknown error occurs");
+		LOGGER.debug("Cause :", ex);
+		return 1;
 	}
 }

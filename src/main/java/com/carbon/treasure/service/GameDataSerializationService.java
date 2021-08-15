@@ -23,24 +23,24 @@
  */
 package com.carbon.treasure.service;
 
-import com.carbon.treasure.domain.Instruction;
-import com.carbon.treasure.domain.Player;
-import com.carbon.treasure.domain.PlayerState;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-public interface PlayerHandler {
+import com.carbon.treasure.domain.GameData;
 
-	PlayerState getCurrentState();
+/**
+ * A functional interface that describe the transformation of GameData to an
+ * input stream
+ */
+@FunctionalInterface
+public interface GameDataSerializationService {
 
-	void consomeNextInstruction();
-
-	boolean haveRemainingInstruction();
-
-	Instruction getNextInstruction();
-
-	Player getAdventurer();
-
-	void treasureFound();
-
-	void consomeAllInstruction();
-
+	/**
+	 * The method read the {@link InputStream} to produce the {@link GameData}. Be
+	 * careful the {@link InputStream} will not be close.
+	 * 
+	 * @param th  game data to write
+	 * @param the outputstream to write
+	 */
+	void serialized(GameData data, OutputStream outputStream);
 }

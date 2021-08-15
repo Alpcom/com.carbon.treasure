@@ -21,19 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.carbon.treasure.parser;
+package com.carbon.treasure.io;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.carbon.treasure.domain.CartesianPosition;
-import com.carbon.treasure.domain.Position;
-import com.carbon.treasure.domain.RectangularArea;
+import com.carbon.treasure.domain.map.CartesianPosition;
 import com.carbon.treasure.domain.map.Cell;
 import com.carbon.treasure.domain.map.CellFactory;
 import com.carbon.treasure.domain.map.GameMap;
+import com.carbon.treasure.domain.map.Position;
+import com.carbon.treasure.domain.map.RectangularArea;
 
 public class GameMapBuilder {
 

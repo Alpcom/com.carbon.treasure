@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.carbon.treasure.parser;
+package com.carbon.treasure.io;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,31 +42,31 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.carbon.treasure.Messages;
-import com.carbon.treasure.domain.CartesianPosition;
 import com.carbon.treasure.domain.Instruction;
 import com.carbon.treasure.domain.Orientation;
 import com.carbon.treasure.domain.PlayerState;
+import com.carbon.treasure.domain.map.CartesianPosition;
 import com.carbon.treasure.domain.map.Cell;
 import com.carbon.treasure.domain.map.GameMap;
 import com.carbon.treasure.domain.map.TreasureCell;
-import com.carbon.treasure.service.PlayerHandler;
+import com.carbon.treasure.service.GameDataDeserializationService;
 import com.carbon.treasure.unittest.UnitTestResourceHelper;
 
 import junit.framework.AssertionFailedError;
 
-public class InputDataParserTest {
+public class GameDataDeserializerTest {
 
-	private static InputDataDeserialisationService parser;
+	private static GameDataDeserializationService parser;
 
 	@BeforeAll
 	public static void beforeAll() {
-		InputDataParserTest.parser = new InputDataBasicFileDeserialisationService();
+		GameDataDeserializerTest.parser = new GameDataIOServiceImpl();
 	}
 
 	@Test
 	public void testWorkingParsing_1() {
 		var fis = UnitTestResourceHelper.getInputStream("parsingOk_1");
-		var parse = InputDataParserTest.parser.parse(fis);
+		var parse = GameDataDeserializerTest.parser.parse(fis);
 		GameMap map = parse.getMap();
 		assertEquals(12, map.getCells().size());
 
@@ -88,11 +88,11 @@ public class InputDataParserTest {
 		TreasureCell castedSecondTreasure = (TreasureCell) secondTreasure;
 		assertEquals(1, castedSecondTreasure.getTreasureCount());
 
-		PlayerHandler indiana = parse.getAdventurers().getPlayerHandler("Indiana");
-		PlayerState state = indiana.getCurrentState();
-		assertEquals(new CartesianPosition(1, 1), state.getPosition());
-		assertEquals(Orientation.SOUTH, state.getOrientation());
-		List<Instruction> instructions = new ArrayList<>(indiana.getInstructions());
+		PlayerState indiana = parse.getAdventurers().stream().filter(ps -> ps.getPlayer().getName().equals("Indiana"))
+				.findFirst().orElseThrow();
+		assertEquals(new CartesianPosition(1, 1), indiana.getPosition());
+		assertEquals(Orientation.SOUTH, indiana.getOrientation());
+		List<Instruction> instructions = new ArrayList<>(indiana.getRemainingInstructions());
 		instructions.removeAll(Arrays.asList(//
 				Instruction.MOVE, //
 				Instruction.MOVE, //
@@ -101,14 +101,14 @@ public class InputDataParserTest {
 				Instruction.RIGHT, //
 				Instruction.MOVE));
 		assertTrue(instructions.isEmpty());
-		assertEquals(1, parse.getAdventurers().count());
+		assertEquals(1, parse.getAdventurers().size());
 
 	}
 
 	@Test
 	public void testWorkingParsing_2() {
 		var fis = UnitTestResourceHelper.getInputStream("parsingOk_2");
-		var parse = InputDataParserTest.parser.parse(fis);
+		var parse = GameDataDeserializerTest.parser.parse(fis);
 		GameMap map = parse.getMap();
 		assertEquals(12, map.getCells().size());
 
@@ -130,11 +130,12 @@ public class InputDataParserTest {
 		TreasureCell castedSecondTreasure = (TreasureCell) secondTreasure;
 		assertEquals(3, castedSecondTreasure.getTreasureCount());
 
-		PlayerHandler lara = parse.getAdventurers().getPlayerHandler("Lara");
-		PlayerState state = lara.getCurrentState();
-		assertEquals(new CartesianPosition(1, 1), state.getPosition());
-		assertEquals(Orientation.NORTH, state.getOrientation());
-		List<Instruction> larasInstructions = new ArrayList<>(lara.getInstructions());
+		PlayerState lara = parse.getAdventurers().stream() //
+				.filter(ps -> ps.getPlayer().getName().equals("Lara")) //
+				.findFirst().orElseThrow();
+		assertEquals(new CartesianPosition(1, 1), lara.getPosition());
+		assertEquals(Orientation.NORTH, lara.getOrientation());
+		List<Instruction> larasInstructions = new ArrayList<>(lara.getRemainingInstructions());
 		larasInstructions.removeAll(Arrays.asList(//
 				Instruction.MOVE, //
 				Instruction.MOVE, //
@@ -147,31 +148,34 @@ public class InputDataParserTest {
 				Instruction.MOVE));
 		assertTrue(larasInstructions.isEmpty());
 
-		PlayerHandler toto = parse.getAdventurers().getPlayerHandler("Toto");
-		PlayerState totosState = toto.getCurrentState();
-		assertEquals(new CartesianPosition(1, 1), totosState.getPosition());
-		assertEquals(Orientation.EAST, totosState.getOrientation());
-		List<Instruction> totosInstructions = new ArrayList<>(toto.getInstructions());
+		PlayerState toto = parse.getAdventurers().stream()//
+				.filter(ps -> ps.getPlayer().getName().equals("Toto")) //
+				.findFirst().orElseThrow();
+		assertEquals(new CartesianPosition(1, 1), toto.getPosition());
+		assertEquals(Orientation.EAST, toto.getOrientation());
+		List<Instruction> totosInstructions = new ArrayList<>(toto.getRemainingInstructions());
 		totosInstructions.removeAll(Arrays.asList(Instruction.MOVE));
 		assertTrue(totosInstructions.isEmpty());
 
-		PlayerHandler amalya = parse.getAdventurers().getPlayerHandler("Amalya");
-		PlayerState amalyasState = amalya.getCurrentState();
-		assertEquals(new CartesianPosition(1, 1), amalyasState.getPosition());
-		assertEquals(Orientation.SOUTH, amalyasState.getOrientation());
-		List<Instruction> amalyasInstructions = new ArrayList<>(amalya.getInstructions());
+		PlayerState amalya = parse.getAdventurers().stream()//
+				.filter(ps -> ps.getPlayer().getName().equals("Amalya")) //
+				.findFirst().orElseThrow();
+		assertEquals(new CartesianPosition(1, 1), amalya.getPosition());
+		assertEquals(Orientation.SOUTH, amalya.getOrientation());
+		List<Instruction> amalyasInstructions = new ArrayList<>(amalya.getRemainingInstructions());
 		amalyasInstructions.removeAll(Arrays.asList(Instruction.RIGHT));
 		assertTrue(amalyasInstructions.isEmpty());
 
-		PlayerHandler nathanael = parse.getAdventurers().getPlayerHandler("Nathanaël");
-		PlayerState nathanaelsState = nathanael.getCurrentState();
-		assertEquals(new CartesianPosition(1, 1), nathanaelsState.getPosition());
-		assertEquals(Orientation.WEST, nathanaelsState.getOrientation());
-		List<Instruction> nathanaelsInstructions = new ArrayList<>(nathanael.getInstructions());
+		PlayerState nathanael = parse.getAdventurers().stream()//
+				.filter(ps -> ps.getPlayer().getName().equals("Nathanaël")) //
+				.findFirst().orElseThrow();
+		assertEquals(new CartesianPosition(1, 1), nathanael.getPosition());
+		assertEquals(Orientation.WEST, nathanael.getOrientation());
+		List<Instruction> nathanaelsInstructions = new ArrayList<>(nathanael.getRemainingInstructions());
 		nathanaelsInstructions.removeAll(Arrays.asList(Instruction.MOVE));
 		assertTrue(nathanaelsInstructions.isEmpty());
 
-		assertEquals(4, parse.getAdventurers().count());
+		assertEquals(4, parse.getAdventurers().size());
 
 	}
 
@@ -193,7 +197,7 @@ public class InputDataParserTest {
 		var fis = UnitTestResourceHelper.getInputStream(fileNameToParse);
 		Objects.requireNonNull(fis);
 		try {
-			InputDataParserTest.parser.parse(fis);
+			GameDataDeserializerTest.parser.parse(fis);
 			fail("No exception has been thrown");
 		} catch (RuntimeException e) {
 			if (!expectedFailmsg.equals(e.getMessage())) {
@@ -209,31 +213,31 @@ public class InputDataParserTest {
 		return Stream.of(
 	// @formatter:off
 //adventurer
-Arguments.of("parsingFailAdventurerTwiceSet", getMsg(Messages::getMessage, "InputDataDelegate.Logger1")),
-Arguments.of("parsingFailMalformedAdventurer_1", getMsg(Messages::getMessage, "InputDataDelegate.Logger19", "A - Indiana - 1 - 1 - S - AADADA - 1")),			
-Arguments.of("parsingFailMalformedAdventurer_2", getMsg(Messages::getMessage, "InputDataDelegate.Logger19", "A - Indiana - A - 1 - S - AADADA")),			
-Arguments.of("parsingFailMalformedAdventurer_3", getMsg(Messages::getMessage, "InputDataDelegate.Logger19", "A - Indiana - 1 - B - S - AADADA")),			
-Arguments.of("parsingFailMalformedAdventurer_4", getMsg(Messages::getMessage, "InputDataDelegate.Logger19", "A - Indiana - 1 - 1 - T - AADADA")),			
-Arguments.of("parsingFailMalformedAdventurer_5", getMsg(Messages::getMessage, "InputDataDelegate.Logger0", "A - Indiana - 1 - 1 - S - Y",System.lineSeparator(),"Y")),			
+Arguments.of("parsingFailAdventurerTwiceSet", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger1")),
+Arguments.of("parsingFailMalformedAdventurer_1", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger19", "A - Indiana - 1 - 1 - S - AADADA - 1")),			
+Arguments.of("parsingFailMalformedAdventurer_2", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger19", "A - Indiana - A - 1 - S - AADADA")),			
+Arguments.of("parsingFailMalformedAdventurer_3", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger19", "A - Indiana - 1 - B - S - AADADA")),			
+Arguments.of("parsingFailMalformedAdventurer_4", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger19", "A - Indiana - 1 - 1 - T - AADADA")),			
+Arguments.of("parsingFailMalformedAdventurer_5", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger0", "A - Indiana - 1 - 1 - S - Y",System.lineSeparator(),"Y")),			
 //treasure
-Arguments.of("parsingFailTreasureTwiceSet", getMsg(Messages::getMessage, "InputDataDelegate.Logger20")),
-Arguments.of("parsingFailMalformedTreasure_1", getMsg(Messages::getMessage, "InputDataDelegate.Logger22", "T - 3 - 4")),
-Arguments.of("parsingFailMalformedTreasure_2", getMsg(Messages::getMessage, "InputDataDelegate.Logger22", "T - A - 1 - 1")),
-Arguments.of("parsingFailMalformedTreasure_3", getMsg(Messages::getMessage, "InputDataDelegate.Logger22", "T - 3 - B - 1")),
-Arguments.of("parsingFailMalformedTreasure_4", getMsg(Messages::getMessage, "InputDataDelegate.Logger22", "T - 3 - 1 - C")),
+Arguments.of("parsingFailTreasureTwiceSet", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger20")),
+Arguments.of("parsingFailMalformedTreasure_1", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger22", "T - 3 - 4")),
+Arguments.of("parsingFailMalformedTreasure_2", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger22", "T - A - 1 - 1")),
+Arguments.of("parsingFailMalformedTreasure_3", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger22", "T - 3 - B - 1")),
+Arguments.of("parsingFailMalformedTreasure_4", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger22", "T - 3 - 1 - C")),
 				
 //moutain
-Arguments.of("parsingFailMountainTwiceSet", getMsg(Messages::getMessage, "InputDataDelegate.Logger23",1,1)),
-Arguments.of("parsingFailMalformedMountain_1", getMsg(Messages::getMessage, "InputDataDelegate.Logger25", "M - 3 - 4 - 1")),
-Arguments.of("parsingFailMalformedMountain_2", getMsg(Messages::getMessage, "InputDataDelegate.Logger25", "M - A - 1")),
-Arguments.of("parsingFailMalformedMountain_3", getMsg(Messages::getMessage, "InputDataDelegate.Logger25", "M - 3 - B")),
+Arguments.of("parsingFailMountainTwiceSet", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger23",1,1)),
+Arguments.of("parsingFailMalformedMountain_1", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger25", "M - 3 - 4 - 1")),
+Arguments.of("parsingFailMalformedMountain_2", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger25", "M - A - 1")),
+Arguments.of("parsingFailMalformedMountain_3", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger25", "M - 3 - B")),
 // map
-Arguments.of("parsingFailMapTwiceSet", getMsg(Messages::getMessage, "InputDataDelegate.Logger26")),
-Arguments.of("parsingFailMalformedMap_1", getMsg(Messages::getMessage, "InputDataDelegate.Logger28", "C - 3 - 4 - 1")),
-Arguments.of("parsingFailMalformedMap_2", getMsg(Messages::getMessage, "InputDataDelegate.Logger28", "C - A - 1")),
-Arguments.of("parsingFailMalformedMap_3", getMsg(Messages::getMessage, "InputDataDelegate.Logger28", "C - 3 - B")),
+Arguments.of("parsingFailMapTwiceSet", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger26")),
+Arguments.of("parsingFailMalformedMap_1", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger28", "C - 3 - 4 - 1")),
+Arguments.of("parsingFailMalformedMap_2", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger28", "C - A - 1")),
+Arguments.of("parsingFailMalformedMap_3", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger28", "C - 3 - B")),
 
-Arguments.of("parsingFailUnknowLineStart", getMsg(Messages::getMessage, "InputDataDelegate.Logger29","G - 2"))
+Arguments.of("parsingFailUnknowLineStart", getMsg(Messages::getMessage, "GameDataSerializationDelegate.Logger29","G - 2"))
 
 	// @formatter:on
 		);

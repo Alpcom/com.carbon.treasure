@@ -23,25 +23,39 @@
  */
 package com.carbon.treasure.domain;
 
+import java.util.List;
 import java.util.Objects;
+
+import com.carbon.treasure.domain.map.Position;
 
 /**
  * this class represent the state of an adventurer : its position and its
  * orientation
  */
 public class PlayerState {
-	private final Position position;
-	private final Orientation orientation;
+	private Position position;
+	private Orientation orientation;
+	private List<Instruction> remainingInstruction;
+	private final Player player;
+	private int score;
 
 	/**
 	 * @param position    see {@link Position}
 	 * @param orientation see {@link Orientation}
 	 */
-	public PlayerState(Position position, Orientation orientation) {
+	public PlayerState(Player player, Position position, Orientation orientation,
+			List<Instruction> remainingInstruction) {
+		this.player = player;
+		updateState(position, orientation, remainingInstruction);
+	}
+
+	private void updateState(Position position, Orientation orientation, List<Instruction> remainingInstruction) {
 		Objects.requireNonNull(position);
 		Objects.requireNonNull(orientation);
+		Objects.requireNonNull(remainingInstruction);
 		this.position = position;
 		this.orientation = orientation;
+		this.remainingInstruction = remainingInstruction;
 	}
 
 	/**
@@ -58,50 +72,51 @@ public class PlayerState {
 		return this.orientation;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#hashCode()
-	 */
+	public List<Instruction> getRemainingInstructions() {
+		return remainingInstruction;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
 	@Override
 	public int hashCode() {
-		final var prime = 31;
-		var result = 1;
-		result = prime * result + this.orientation.hashCode();
-		result = prime * result + this.position.hashCode();
-		return result;
+		return Objects.hash(player);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
-		var other = (PlayerState) obj;
-		if (this.orientation != other.orientation) {
-			return false;
-		}
-		return this.position.equals(other.position);
+		PlayerState other = (PlayerState) obj;
+		return Objects.equals(player, other.player);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		return "AdventurerState [position=" + this.position + ", orientation=" + this.orientation + "]";
+		return "PlayerState [position=" + position + ", orientation=" + orientation + ", remainingInstruction="
+				+ remainingInstruction + ", player=" + player + "]";
 	}
+
+	public void setOrientation(Orientation orientation) {
+		this.orientation = orientation;
+	}
+
+	public void setPosition(Position targetPosition) {
+		this.position = targetPosition;
+	}
+
+	public void addScorePoint(int i) {
+		this.score += i;
+	}
+
+	public int getScorePoint() {
+		return score;
+	}
+
 }

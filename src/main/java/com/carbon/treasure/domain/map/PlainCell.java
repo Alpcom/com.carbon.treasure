@@ -23,17 +23,10 @@
  */
 package com.carbon.treasure.domain.map;
 
-import com.carbon.treasure.domain.Position;
-
 public class PlainCell extends Cell {
 
 	public PlainCell(Position p) {
 		super(p);
-	}
-
-	@Override
-	public boolean canMoveOn() {
-		return true;
 	}
 
 	@Override

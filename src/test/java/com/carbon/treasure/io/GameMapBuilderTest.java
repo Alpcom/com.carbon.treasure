@@ -21,18 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.carbon.treasure.parser;
+package com.carbon.treasure.io;
 
-public class ParsingException extends RuntimeException {
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 
-	private static final long serialVersionUID = 6901939689397945612L;
+import org.junit.jupiter.api.Test;
 
-	public ParsingException(String formattedLocalizedMessage, Exception object) {
-		super(formattedLocalizedMessage, object);
+import com.carbon.treasure.domain.map.CartesianPosition;
+import com.carbon.treasure.domain.map.CellFactory;
+import com.carbon.treasure.domain.map.RectangularArea;
+
+class GameMapBuilderTest {
+
+	@Test
+	void testConflictBetweenTreasureAndMountain() {
+		GameMapBuilder builder = new GameMapBuilder();
+		builder.setArea(new RectangularArea(0, 0, 2, 2));
+		builder.addMountains(new CartesianPosition(1, 1));
+		builder.addTreasure(new CartesianPosition(1, 1), 1);
+		assertThrows(IllegalArgumentException.class, () -> builder.build(mock(CellFactory.class)));
 	}
 
-	public ParsingException(String message) {
-		this(message, null);
+	@Test
+	void testTwiceSetArea() {
+		GameMapBuilder builder = new GameMapBuilder();
+		builder.setArea(mock(RectangularArea.class));
+		assertThrows(IllegalStateException.class, () -> builder.setArea(mock(RectangularArea.class)));
 	}
 
 }

@@ -23,8 +23,20 @@
  */
 package com.carbon.treasure.domain;
 
-public interface Area {
+import org.junit.jupiter.api.Test;
 
-	boolean contains(Position position);
+import com.google.common.testing.EqualsTester;
+
+class PlayerTest {
+
+	@Test
+	void testEquals() {
+		String toto = "toto";
+		new EqualsTester()//
+				.addEqualityGroup(new Player(toto), new Player(toto))//
+				.addEqualityGroup(new Player(null))//
+				.addEqualityGroup(new Player("tata"), new Player(new String("tata")))//
+				.testEquals();
+	}
 
 }

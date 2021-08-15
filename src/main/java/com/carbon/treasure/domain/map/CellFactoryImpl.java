@@ -23,8 +23,6 @@
  */
 package com.carbon.treasure.domain.map;
 
-import com.carbon.treasure.domain.Position;
-
 public class CellFactoryImpl implements CellFactory {
 
 	@Override

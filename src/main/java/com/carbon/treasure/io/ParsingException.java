@@ -21,29 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.carbon.treasure.domain;
+package com.carbon.treasure.io;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+public class ParsingException extends RuntimeException {
 
-import com.carbon.treasure.service.PlayerHandler;
-import com.carbon.treasure.service.PrecomputedPlayerHandler;
+	private static final long serialVersionUID = 6901939689397945612L;
 
-public class PlayerStates {
-
-	Map<Player, PlayerHandler> players = new HashMap<>();
-
-	public boolean add(Player adventurer, PlayerState adventurerState, List<Instruction> instructions) {
-		return null == players.putIfAbsent(adventurer, new PrecomputedPlayerHandler(adventurer,adventurerState,instructions));
+	public ParsingException(String formattedLocalizedMessage, Exception object) {
+		super(formattedLocalizedMessage, object);
 	}
 
-	public PlayerHandler getPlayerHandler(String adventurerName) {
-		return players.get(new Player(adventurerName));
-	}
-
-	public int count() {
-		return players.size();
+	public ParsingException(String message) {
+		this(message, null);
 	}
 
 }

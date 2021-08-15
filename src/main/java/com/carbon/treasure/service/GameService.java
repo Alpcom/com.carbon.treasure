@@ -21,25 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.carbon.treasure.parser;
+package com.carbon.treasure.service;
 
-import java.io.InputStream;
+import com.carbon.treasure.domain.GameData;
 
-import com.carbon.treasure.domain.InputData;
-
-/**
- * A functional interface that describe the transformation of an input stream to
- * the data that will be handle by mowers
- */
-@FunctionalInterface
-public interface InputDataDeserialisationService {
-
-    /**
-     * The method read the {@link InputStream} to produce the {@link InputData}. Be
-     * carefull the {@link InputStream} will not be close.
-     * 
-     * @param inputStream
-     * @return the deserialized data
-     */
-    InputData parse(InputStream inputStream);
+public class GameService {
+	public GameData play(GameData data) {
+		return new GameState(data).play().toData();
+	}
 }

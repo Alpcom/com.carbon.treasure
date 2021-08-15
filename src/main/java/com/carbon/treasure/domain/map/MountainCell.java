@@ -23,17 +23,10 @@
  */
 package com.carbon.treasure.domain.map;
 
-import com.carbon.treasure.domain.Position;
-
 public class MountainCell extends Cell {
 
 	public MountainCell(Position p) {
 		super(p);
-	}
-
-	@Override
-	public boolean canMoveOn() {
-		return false;
 	}
 
 	@Override

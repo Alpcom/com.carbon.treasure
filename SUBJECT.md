@@ -106,11 +106,9 @@ Voici le format de sortie :
 C - 3 - 4
 M - 1 - 0
 M - 2 - 1
-# {T comme Trésor} - {Axe horizontal} - {Axe vertical} - {Nb. de trésors
-restants}
+# {T comme Trésor} - {Axe horizontal} - {Axe vertical} - {Nb. de trésors restants}
 T - 1 - 3 - 2
-# {A comme Aventurier} - {Nom de l’aventurier} - {Axe horizontal} - {Axe
-vertical} - {Orientation} - {Nb. trésors ramassés}
+# {A comme Aventurier} - {Nom de l’aventurier} - {Axe horizontal} - {Axe vertical} - {Orientation} - {Nb. trésors ramassés}
 A - Lara - 0 - 3 - S - 3
 ```
 Que l’on peut représenter sous la forme suivante :

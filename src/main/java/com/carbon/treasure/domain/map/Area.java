@@ -21,24 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.carbon.treasure.domain;
+package com.carbon.treasure.domain.map;
 
-import org.junit.jupiter.api.Test;
+public interface Area {
 
-import com.google.common.testing.EqualsTester;
-
-class MowerStateTest {
-
-    @Test
-    void testEquals() {
-	Position p1 = new CartesianPosition(0, 0);
-	Position p2 = new CartesianPosition(1, 1);
-	new EqualsTester()//
-		.addEqualityGroup(new PlayerState(p1, Orientation.NORTH))//
-		.addEqualityGroup(new PlayerState(p1, Orientation.EAST))//
-		.addEqualityGroup(new PlayerState(p2, Orientation.NORTH))//
-		.addEqualityGroup(new PlayerState(p2, Orientation.SOUTH))//
-		.testEquals();
-    }
+	boolean contains(Position position);
 
 }

@@ -21,33 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.carbon.treasure.parser;
+package com.carbon.treasure.domain;
 
+import static com.carbon.treasure.domain.Orientation.EAST;
+import static com.carbon.treasure.domain.Orientation.NORTH;
+import static com.carbon.treasure.domain.Orientation.SOUTH;
+import static com.carbon.treasure.domain.Orientation.WEST;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 
 import org.junit.jupiter.api.Test;
 
-import com.carbon.treasure.domain.CartesianPosition;
-import com.carbon.treasure.domain.RectangularArea;
-import com.carbon.treasure.domain.map.CellFactory;
-
-class GameMapBuilderTest {
+class OrientationTest {
 
 	@Test
-	void testConflictBetweenTreasureAndMountain() {
-		GameMapBuilder builder = new GameMapBuilder();
-		builder.setArea(new RectangularArea(0, 0, 2, 2));
-		builder.addMountains(new CartesianPosition(1, 1));
-		builder.addTreasure(new CartesianPosition(1, 1), 1);
-		assertThrows(IllegalArgumentException.class, () -> builder.build(mock(CellFactory.class)));
+	void testNext() {
+		assertEquals(EAST, NORTH.next());
+		assertEquals(SOUTH, EAST.next());
+		assertEquals(WEST, SOUTH.next());
+		assertEquals(NORTH, WEST.next());
 	}
 
 	@Test
-	void testTwiceSetArea() {
-		GameMapBuilder builder = new GameMapBuilder();
-		builder.setArea(mock(RectangularArea.class));
-		assertThrows(IllegalStateException.class, () -> builder.setArea(mock(RectangularArea.class)));
+	void testPrevious() {
+		assertEquals(WEST, NORTH.previous());
+		assertEquals(NORTH, EAST.previous());
+		assertEquals(EAST, SOUTH.previous());
+		assertEquals(SOUTH, WEST.previous());
 	}
 
 }

@@ -25,16 +25,12 @@ package com.carbon.treasure.domain.map;
 
 import java.util.Objects;
 
-import com.carbon.treasure.domain.Position;
-
 public abstract class Cell {
 	private final Position position;
 
 	public Cell(Position p) {
 		this.position = p;
 	}
-
-	public abstract boolean canMoveOn();
 
 	public boolean removeATreasure() {
 		return false;

@@ -21,7 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.carbon.treasure.domain;
+package com.carbon.treasure.domain.map;
+
+import com.carbon.treasure.domain.Orientation;
 
 /**
  * Common interface to position the methods provide by this interface can be
